@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.object.dao.sys.TUserDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.object.module.lq.sys.entity.TUserEntity" id="userMap">
+                    <result property="urId" column="ur_id"/>
+                    <result property="urName" column="ur_name"/>
+                    <result property="urUsername" column="ur_username"/>
+                    <result property="urPassword" column="ur_password"/>
+                    <result property="urEmail" column="ur_email"/>
+                    <result property="urCreateTime" column="ur_create_time"/>
+                    <result property="urAvatar" column="ur_avatar"/>
+                    <result property="urStuats" column="ur_stuats"/>
+                    <result property="urReId" column="ur_re_id"/>
+                    <result property="urSex" column="ur_sex"/>
+            </resultMap>
+
+
+</mapper>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.object.dao.chatroom.TAddRecordDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.object.module.lq.chatroom.entity.TAddRecordEntity" id="tAddRecordMap">
+                    <result property="rUIn" column="r_u_in"/>
+                    <result property="rUOut" column="r_u_out"/>
+                    <result property="rUTimeIn" column="r_u_time_in"/>
+                    <result property="rUTimeOut" column="r_u_time_out"/>
+                    <result property="rURemarks" column="r_u_remarks"/>
+            </resultMap>
+
+
+</mapper>

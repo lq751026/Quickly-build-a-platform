@@ -1,0 +1,43 @@
+import request from '@/utils/request'
+
+var path='$pathName'
+export default{
+    list(data) {
+        return request({
+            url: `#[[${path}]]#/list`,
+            method: 'get',
+            params: data
+        })
+    },
+
+    info(id) {
+        return request({
+            url: `#[[${path}]]#/info/${id}`,
+            method: 'get',
+        })
+    },
+    /**
+     *  修改 和 添加
+     * @param {修改的对象数据封装} data
+     * @returns
+     */
+    updateAdd(data,id) {
+        return request({
+            url: `#[[${path}]]#/${!id ? "save" : "update"}`,
+            method: "post",
+            data
+        })
+    },
+    /**
+     *  删除的ids
+     * @param {删除} data
+     * @returns
+     */
+    delete(data) {
+        return request({
+            url: `#[[${path}]]#/delete`,
+            method: "post",
+            data
+        })
+    }
+}

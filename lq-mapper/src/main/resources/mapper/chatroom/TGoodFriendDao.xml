@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.object.dao.chatroom.TGoodFriendDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.object.module.lq.chatroom.entity.TGoodFriendEntity" id="tGoodFriendMap">
+                    <result property="tOwn" column="t_own"/>
+                    <result property="tGoodFriend" column="t_good_friend"/>
+                    <result property="tGrouping" column="t_grouping"/>
+                    <result property="tName" column="t_name"/>
+            </resultMap>
+
+
+</mapper>
