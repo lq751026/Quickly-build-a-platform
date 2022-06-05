@@ -13,6 +13,7 @@ import com.object.module.lq.sys.service.TRoleService;
 import com.object.utils.PasswordEncryp;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,21 +45,26 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+
         QueryWrapper<TUserEntity> wrapper = new QueryWrapper<>();
-        String key = (String) params.get("key");
-        if (!StringUtils.isEmpty(key)) {
-            wrapper.eq("ur_username", key);
-        }
-        IPage<TUserEntity> page = this.page(
-                new Query<TUserEntity>().getPage(params),
-                wrapper
-        );
+        String id = (String) params.get("id");
+        String name = (String) params.get("name");
+        String createTime = (String) params.get("createTime");
+        String endTiem = (String) params.get("endTiem");
+        String status = (String) params.get("status");
+        if (StringUtils.isNotEmpty(id)) wrapper.eq("ur_id", id);
+        if (StringUtils.isNotEmpty(name)) wrapper.or().eq("ur_username", name);
+        if (StringUtils.isNotEmpty(createTime)) wrapper.or().ge("create_time", createTime);
+        if (StringUtils.isNotEmpty(endTiem)) wrapper.or().le("create_time", endTiem);
+        if (StringUtils.isNotEmpty(status)) wrapper.or().eq("ur_stuats", status);
+        IPage<TUserEntity> page = this.page(new Query<TUserEntity>().getPage(params), wrapper);
         for (TUserEntity user : page.getRecords()) {
             user.setRole(roleServicel.getById(user.getUrReId()));
         }
 
         return new PageUtils(page);
     }
+
 
     /**
      * 登录
@@ -120,7 +126,8 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
     }
 
     /**
-     *     查找好友
+     * 查找好友
+     *
      * @param userId
      * @param addUserId
      * @return
@@ -128,15 +135,14 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
     @Override
     @Transactional
     public String addUser(Integer userId, Integer addUserId) {
-        QueryWrapper<TAddRecordEntity> wrapper=new QueryWrapper<TAddRecordEntity>()
-                 .eq("r_u_in",userId).eq("r_u_out",addUserId);
+        QueryWrapper<TAddRecordEntity> wrapper = new QueryWrapper<TAddRecordEntity>().eq("r_u_in", userId).eq("r_u_out", addUserId);
         TAddRecordEntity addRecordEntity1 = addRecordService.getOne(wrapper);
-        if (addRecordEntity1!=null) {
-              if(addRecordEntity1.getRUTimeOut()!=null){
-                   //已经是好友了 直接返回 我们是已经是好友无需重复添加
-                  return "我们已经是好友了不需要重复添加!";
-              }
-             return "请不要频繁添加,等待同意！";
+        if (addRecordEntity1 != null) {
+            if (addRecordEntity1.getRUTimeOut() != null) {
+                //已经是好友了 直接返回 我们是已经是好友无需重复添加
+                return "我们已经是好友了不需要重复添加!";
+            }
+            return "请不要频繁添加,等待同意！";
         }
         TAddRecordEntity addRecordEntity = new TAddRecordEntity();
         addRecordEntity.setRUIn(userId);
@@ -145,12 +151,13 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
         val urName = findById(userId).getUrName();
         addRecordEntity.setRURemarks("我是" + urName);
         boolean flag = addRecordService.save(addRecordEntity);
-        return flag?"ok":"好友申请失败！！";
+        return flag ? "ok" : "好友申请失败！！";
     }
 
     /**
      * 获取好友的申请
-     *Z
+     * Z
+     *
      * @param userId
      * @return
      */
@@ -161,7 +168,8 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
     }
 
     /**
-     *  同意好友
+     * 同意好友
+     *
      * @param userId
      * @param agreeUserId
      * @return
@@ -170,39 +178,39 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
     @Transactional
     public Q agreeUserId(Integer userId, Integer agreeUserId) {
         //修改同意时间
-        boolean flag=false;
-        QueryWrapper<TAddRecordEntity> wrapper=new QueryWrapper<TAddRecordEntity>().eq("r_u_in",agreeUserId)
-                .eq("r_u_out",userId);
-        TAddRecordEntity addRecordEntity=new TAddRecordEntity();
+        boolean flag = false;
+        QueryWrapper<TAddRecordEntity> wrapper = new QueryWrapper<TAddRecordEntity>().eq("r_u_in", agreeUserId).eq("r_u_out", userId);
+        TAddRecordEntity addRecordEntity = new TAddRecordEntity();
         addRecordEntity.setRUTimeOut(new Date());
         addRecordEntity.setRUIn(agreeUserId);
         addRecordEntity.setRUOut(userId);
-        flag=addRecordService.update(addRecordEntity, wrapper);
+        flag = addRecordService.update(addRecordEntity, wrapper);
 
         //保存到好友列表去
-        TGoodFriendEntity goodFriendEntity=new TGoodFriendEntity();
+        TGoodFriendEntity goodFriendEntity = new TGoodFriendEntity();
         goodFriendEntity.setTOwn(userId);
         goodFriendEntity.setTGoodFriend(agreeUserId);
         val userEntity = getById(agreeUserId);
         goodFriendEntity.setTName(userEntity.getUrName());
-        flag=goodFriendService.save(goodFriendEntity);
+        flag = goodFriendService.save(goodFriendEntity);
         //保存两个好友
         goodFriendEntity.setTOwn(agreeUserId);
         goodFriendEntity.setTGoodFriend(userId);
-        flag=goodFriendService.save(goodFriendEntity);
-        return flag?Q.ok():Q.error().put("msg","同意出现异常！！");
+        flag = goodFriendService.save(goodFriendEntity);
+        return flag ? Q.ok() : Q.error().put("msg", "同意出现异常！！");
     }
 
 
     /**
-     *  获取好友列表
+     * 获取好友列表
+     *
      * @param userId
      * @return
      */
     @Override
     public Q getFriends(Integer userId) {
-       List<TGoodFriendOv> list= usserdao.getFriends(userId);
-        return Q.ok().put("data",list);
+        List<TGoodFriendOv> list = usserdao.getFriends(userId);
+        return Q.ok().put("data", list);
     }
 
 

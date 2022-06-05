@@ -37,7 +37,7 @@ public class TUserController {
      */
     @ApiOperation("列表")
     @RequestMapping("/list")
-    public Q list(@ApiParam(value = "查询用户列表", required = true) @RequestParam Map<String, Object> params) {
+    public Q list(@ApiParam(value = "查询用户列表", required = true) @RequestParam(required = false) Map<String, Object> params) {
         PageUtils page = userService.queryPage(params);
         return Q.ok().put("page", page);
     }
@@ -64,7 +64,7 @@ public class TUserController {
      * @return
      */
 
-    @RequestMapping("/info/{urId}")
+    @RequestMapping("/admin/info/{urId}")
     public Q info(@PathVariable("urId") Integer urId) {
         TUserEntity user = userService.findById(urId);
         return Q.ok().put("user", user);

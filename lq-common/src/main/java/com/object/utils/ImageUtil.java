@@ -16,18 +16,7 @@ import java.util.UUID;
  * 图片工具类
  */
 public class ImageUtil {
-    private static String host = "";
 
-
-    static {
-        try {
-            final InetAddress localHost = InetAddress.getLocalHost();
-            final String address = localHost.getHostAddress();
-            host = address;
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * 图片压缩
@@ -93,7 +82,7 @@ public class ImageUtil {
         }
         try {
             file.transferTo(file1);
-            return host + ":" + port + "/object" + "/file/" + name + ".zip";
+            return "/object" + "/file/" + name + ".zip";
         } catch (IOException e) {
             e.printStackTrace();
         }
