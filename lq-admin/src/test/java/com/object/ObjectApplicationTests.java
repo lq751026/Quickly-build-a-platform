@@ -105,28 +105,7 @@ class ObjectApplicationTests {
 
     @Test
      public  void  rounter(){
-        List<TRoutingEntity> orderBy = routingService.listOrderBy(1);
-        List<TRouterEntity> routers=new ArrayList<>();
-        for (TRoutingEntity tRoutingEntity : orderBy) {
-            String pathName = tRoutingEntity.getPath().replaceAll("/", "");
-            TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(),tRoutingEntity.getPath(),pathName);
 
-            routerEntity.setMeta(new TMetaEntity(tRoutingEntity.getMenuName(),true,tRoutingEntity.getIcon(),2));
-            List<TRouterEntity> routerEntities=new ArrayList<>();
-            for (TRoutingEntity child : tRoutingEntity.getChildren()) {
-                String pathName1 = child.getPath().replaceAll("/", "");
-                TRouterEntity routerEntity1 = new TRouterEntity(child.getId(),pathName1,pathName1);
-                routerEntity1.setMeta(new TMetaEntity(child.getId(),child.getMenuName(),true,child.getIcon(),2,"['*']"));
-                routerEntities.add(routerEntity1);
-            }
-
-            routerEntity.setChildren(routerEntities);
-            routers.add(routerEntity);
-        }
-
-        for (TRouterEntity router : routers) {
-            System.out.println(router);
-        }
     }
 
 }
