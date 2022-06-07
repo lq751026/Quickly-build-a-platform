@@ -146,3 +146,17 @@ INSERT INTO `t_user` VALUES (5, '123', '123', '$2a$10$.tBXFDlafF2v7yQ3P1MDEOApVr
 INSERT INTO `t_user` VALUES (18, '321', '321', '$2a$10$MeBEconcQ8zcgyUOhc2ouOERiW8ZpGK8T5mtVRIrAetaLqDrFaYi6', '1578423@qq.com', '2021-11-08 16:55:47', 'https://help-xiao.oss-cn-beijing.aliyuncs.com/2021-07-24/533123c9-2a71-4d82-8101-a82c56b472e2_2.jpg', '1', 3, 1);
 
 
+
+-- ----------------------------
+-- Table structure for t_online_listing
+-- ----------------------------
+DROP TABLE IF EXISTS `t_online_listing`;
+CREATE TABLE `t_online_listing`  (
+                              `og_id` int(0) NOT NULL AUTO_INCREMENT,
+                              `og_online_time` datetime NOT NULL COMMENT '登录时间',
+                              `og_user_name` varchar(100)  NOT NULL COMMENT '登录用户名',
+                              `og_ur_id` int(0) NULL DEFAULT 0 COMMENT '用户id',
+                              `og_equipment` varchar(20)  NULL DEFAULT NULL COMMENT '登录设备',
+                              `og_ip` varchar(30)  NULL DEFAULT NULL COMMENT '登录ip',
+                              PRIMARY KEY (`og_id`) USING BTREE
+) COMMENT = '用户在线列表' ;

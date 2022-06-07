@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.object.module.other.dao.TOnlineListingDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.object.module.lq.sys.entity.TOnlineListingEntity" id="tOnlineListingMap">
+                    <result property="ogId" column="og_id"/>
+                    <result property="ogOnlineTime" column="og_online_time"/>
+                    <result property="ogUserName" column="og_user_name"/>
+                    <result property="ogUrId" column="og_ur_id"/>
+                    <result property="ogEquipment" column="og_equipment"/>
+                    <result property="ogIp" column="og_ip"/>
+            </resultMap>
+
+
+</mapper>

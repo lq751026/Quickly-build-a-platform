@@ -2,7 +2,7 @@
   <a-modal
     :title="!this.dataForm.${pk.attrname} ? '新增' : '修改'"
     :close-on-click-modal="false"
-    :visible.sync="visible">
+    :visible="visible">
 
     <div>
     <al-form :model="dataForm" :rules="dataRule" ref="dataForm"  label-width="80px">
@@ -15,8 +15,8 @@
 #end
     </al-form>
     <span slot="footer" class="dialog-footer">
-      <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="dataFormSubmit()">确定</el-button>
+      <al-button @click="visible = false">取消</al-button>
+      <al-button type="primary" @click="dataFormSubmit()">确定</al-button>
     </span>
       </div>
   </a-modal>
