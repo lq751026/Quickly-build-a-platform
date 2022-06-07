@@ -95,6 +95,11 @@ public class Q {
         return this;
     }
 
+    public Q q(String key, Object value) {
+        this.data.put(key, value);
+        return this;
+    }
+
     public Q put(Map<String, Object> map) {
         this.setData(map);
         return this;

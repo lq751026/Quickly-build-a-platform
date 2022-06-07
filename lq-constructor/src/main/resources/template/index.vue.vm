@@ -1,38 +1,36 @@
 <template>
   <div class="mod-config">
     <center>
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <el-form-item>
+    <a-table :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+      <a-table-column>
         <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
+      </a-table-column>
+      <a-table-column>
         <el-button @click="getDataList()">查询</el-button>
         <el-button  v-if="purview.add == role.add" type="primary" @click="addOrUpdateHandle()">新增</el-button>
         <el-button v-if="purview.delete == role.delete" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-      </el-form-item>
-    </el-form>
+      </a-table-column>
+    </a-table>
     </center>
-    <el-table
+    <a-table
       :data="dataList"
       border
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
       style="width: 100%;">
-      <el-table-column
-        type="selection"
-        header-align="center"
-        align="center"
-        width="50">
-      </el-table-column>
+      <template #columns>
+      <a-table-column
+              :bordered="false"
+               row-key="id"
+      >
+      </a-table-column>
 #foreach($column in $columns)
-      <el-table-column
-        prop="${column.attrname}"
-        header-align="center"
-        align="center"
-        label="${column.comments}">
-      </el-table-column>
+      <a-table-column
+          title="${column.attrname}"
+          label="${column.comments}">
+      </a-table-column>
 #end
-      <el-table-column
+      <a-table-column
         fixed="right"
         header-align="center"
         align="center"
@@ -42,10 +40,11 @@
           <el-button v-if="purview.update == role.update" type="text" size="small" @click="addOrUpdateHandle(scope.row.${pk.attrname})">修改</el-button>
           <el-button v-if="purview.delete == role.delete" type="text" size="small" @click="deleteHandle(scope.row.${pk.attrname})">删除</el-button>
         </template>
-      </el-table-column>
-    </el-table>
+      </a-table-column>
+      </template>
+    </a-table>
     <center>
-    <el-pagination
+    <a-pagination
        background
       :pager-count="10"
       @size-change="sizeChangeHandle"
@@ -55,7 +54,7 @@
       :page-size="pageSize"
       :total="totalPage"
       layout="total, sizes, prev, pager, next, jumper">
-    </el-pagination>
+    </a-pagination>
       </center>
     <!-- 弹窗, 新增 / 修改 -->
     <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>

@@ -1,16 +1,14 @@
 package com.object.module.lq.sys.service.impl;
 
-import com.object.module.lq.sys.entity.TRoleEntity;
-import com.object.module.lq.sys.entity.TRoutingEntity;
-import com.object.module.lq.sys.entity.TUserEntity;
+import com.object.module.lq.sys.entity.*;
 import com.object.module.lq.sys.service.TRoutingService;
 import com.object.module.lq.sys.service.TUserService;
 import com.object.module.lq.sys.service.TRoleService;
-import com.object.utils.NubersUtile;
-import com.object.utils.PurviewUtile;
+import com.object.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +17,6 @@ import java.util.stream.Collectors;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.object.utils.PageUtils;
-import com.object.utils.Query;
 
 import com.object.dao.sys.TRoutingDao;
 
@@ -65,7 +61,7 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
      * @return
      */
     @Override
-    public List<TRoutingEntity> listOrderBy(Integer userid) {
+    public Q listOrderBy(Integer userid) {
         List<TRoutingEntity> list;
        if(userid!=null){
            list=getByIdUser(userid);
@@ -79,7 +75,26 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
             menu.setChildren(getChider(menu,list));
             return menu;
         }).collect(Collectors.toList());
-        return collect;
+
+        List<TRouterEntity> routers=new ArrayList<>();
+        for (TRoutingEntity tRoutingEntity : list) {
+            String pathName = tRoutingEntity.getPath().replaceAll("/", "");
+            TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(),tRoutingEntity.getPath(),pathName);
+
+            routerEntity.setMeta(new TMetaEntity(tRoutingEntity.getMenuName(),true,tRoutingEntity.getIcon(),2));
+            List<TRouterEntity> routerEntities=new ArrayList<>();
+            for (TRoutingEntity child : tRoutingEntity.getChildren()) {
+                String pathName1 = child.getPath().replaceAll("/", "");
+                TRouterEntity routerEntity1 = new TRouterEntity(child.getId(),pathName+pathName1,pathName+pathName1);
+                routerEntity1.setMeta(new TMetaEntity(child.getId(),child.getMenuName(),true,child.getIcon(),2,"['*']"));
+                routerEntities.add(routerEntity1);
+            }
+
+            routerEntity.setChildren(routerEntities);
+            routers.add(routerEntity);
+        }
+
+        return Q.ok().put("data",routers);
     }
 
     /**

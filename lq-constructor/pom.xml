@@ -7,8 +7,8 @@
         <artifactId>lq</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>code</artifactId>
+    <groupId>lq-constructor</groupId>
+    <artifactId>lq-constructor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>lq-constructor</name>
     <description>Demo project for Spring Boot</description>

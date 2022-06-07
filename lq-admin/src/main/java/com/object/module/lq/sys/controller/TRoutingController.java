@@ -41,8 +41,7 @@ public class TRoutingController {
      */
     @GetMapping("findAll")
     public Q findAll(Integer userId) {
-       List<TRoutingEntity> list= routingService.listOrderBy(userId);
-        return Q.ok().put("data",list);
+     return  routingService.listOrderBy(userId);
     }
 
 
