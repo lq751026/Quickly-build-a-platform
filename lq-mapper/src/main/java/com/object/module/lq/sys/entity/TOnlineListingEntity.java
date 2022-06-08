@@ -1,12 +1,15 @@
 package com.object.module.lq.sys.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
     import java.io.Serializable;
 import java.util.Date;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户在线列表
@@ -19,7 +22,7 @@ import lombok.Data;
 @TableName("t_online_listing")
 public class TOnlineListingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
-       @TableId
+    @TableId(type = IdType.AUTO)
             private Integer ogId;
             /**
          * 登录时间
@@ -42,4 +45,11 @@ public class TOnlineListingEntity implements Serializable {
          */
             private String ogIp;
 
+    public TOnlineListingEntity(Date ogOnlineTime, String ogUserName, Integer ogUrId, String ogEquipment, String ogIp) {
+        this.ogOnlineTime = ogOnlineTime;
+        this.ogUserName = ogUserName;
+        this.ogUrId = ogUrId;
+        this.ogEquipment = ogEquipment;
+        this.ogIp = ogIp;
+    }
 }

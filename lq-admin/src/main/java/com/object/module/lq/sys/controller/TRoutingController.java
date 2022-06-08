@@ -5,13 +5,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.object.module.lq.sys.entity.TRoutingEntity;
 import com.object.module.lq.sys.service.TRoutingService;
+import com.object.utils.GetUserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.object.utils.PageUtils;
 import com.object.utils.Q;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -40,8 +44,8 @@ public class TRoutingController {
      * 全部查询
      */
     @GetMapping("findAll")
-    public Q findAll(Integer userId) {
-     return  routingService.listOrderBy(userId);
+    public Q findAll(HttpServletRequest request) {
+     return  routingService.listOrderBy(GetUserId.id(request));
     }
 
 

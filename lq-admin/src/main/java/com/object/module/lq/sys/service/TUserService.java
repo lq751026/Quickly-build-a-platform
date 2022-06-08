@@ -6,6 +6,7 @@ import com.object.module.lq.sys.ov.TUserAndAddUser;
 import com.object.utils.PageUtils;
 import com.object.utils.Q;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -36,5 +37,9 @@ public interface TUserService extends IService<TUserEntity> {
     Q agreeUserId(Integer userId, Integer agreeUserId);
 
     Q getFriends(Integer userId);
+
+    Q login(TUserEntity user, HttpServletRequest request);
+
+    void loginOut(String satoken);
 }
 

@@ -2,8 +2,10 @@ package com.object.module.lq.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.object.module.lq.sys.entity.TOnlineListingEntity;
+import com.object.module.lq.sys.entity.TUserEntity;
 import com.object.utils.PageUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -16,5 +18,9 @@ import java.util.Map;
 public interface TOnlineListingService extends IService<TOnlineListingEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void saveLogin(TUserEntity user1, HttpServletRequest request);
+
+    void deleteUserId(Integer urId);
 }
 

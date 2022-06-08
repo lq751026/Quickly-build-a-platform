@@ -2,6 +2,7 @@ package com.object.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import org.apache.ibatis.reflection.MetaObject;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
@@ -12,7 +13,8 @@ import java.util.Date;
  * @create: 2020-11-24 10:53
  **/
 @Component
-public class MyMetaObjectHandler implements MetaObjectHandler {
+@Configuration
+public class MyMetaObjectHandler implements MetaObjectHandler  {
     /**
      * 插入时的填充策略
      * @param metaObject

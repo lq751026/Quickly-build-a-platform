@@ -1,5 +1,6 @@
 package com.object.module.lq.sys.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ContentStyle;
@@ -19,10 +20,8 @@ import java.util.Date;
  * @date 2021-07-24 15:24:06
  */
 @Data
-@ExcelIgnoreUnannotated
-@ContentStyle(shrinkToFit = true,horizontalAlignment = HorizontalAlignment.CENTER,dataFormat = 1)
-@HeadStyle(shrinkToFit = true,horizontalAlignment = HorizontalAlignment.CENTER,fillBackgroundColor=50)
 @TableName("t_user")
+@ExcelIgnoreUnannotated
 public class TUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -59,20 +58,18 @@ public class TUserEntity implements Serializable {
     /**
      * 头像
      */
+    @ExcelProperty("头像")
     private String urAvatar;
     /**
      * 状态(0.冻结，1.正常 )
      */
-    @ExcelProperty(value = "状态",converter = UserStateHandler.class)
-    private String urStuats;
+    @ExcelProperty("状态(0.冻结，1.正常 )")
+    private Integer urStuats;
     /**
      * 角色id
      */
+
     private Integer urReId;
-    /**
-     * 性别
-     */
-    @ExcelProperty(value = "状态",converter = UserSexHandler.class)
     private Integer urSex;
 
     /**

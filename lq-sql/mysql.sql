@@ -132,7 +132,7 @@ CREATE TABLE `t_user`  (
                            `ur_email` varchar(255)  NULL DEFAULT NULL COMMENT '邮箱',
                            `create_time` datetime NULL DEFAULT NULL COMMENT '账号的注册时间',
                            `ur_avatar` varchar(255)  NULL DEFAULT 'https://help-xiao.oss-cn-beijing.aliyuncs.com/2021-07-24/533123c9-2a71-4d82-8101-a82c56b472e2_2.jpg' COMMENT '头像',
-                           `ur_stuats` varchar(255)  NULL DEFAULT '1' COMMENT '状态(0.冻结，1.正常 )',
+                           `ur_stuats` int(20)  NULL DEFAULT '1' COMMENT '状态(0.冻结，1.正常 )',
                            `ur_re_id` int(0) NULL DEFAULT 3 COMMENT '角色id',
                            `ur_sex` int(0) NULL DEFAULT 1 COMMENT '性别',
                            PRIMARY KEY (`ur_id`) USING BTREE
@@ -156,7 +156,7 @@ CREATE TABLE `t_online_listing`  (
                               `og_online_time` datetime NOT NULL COMMENT '登录时间',
                               `og_user_name` varchar(100)  NOT NULL COMMENT '登录用户名',
                               `og_ur_id` int(0) NULL DEFAULT 0 COMMENT '用户id',
-                              `og_equipment` varchar(20)  NULL DEFAULT NULL COMMENT '登录设备',
-                              `og_ip` varchar(30)  NULL DEFAULT NULL COMMENT '登录ip',
+                              `og_equipment` varchar(200)  NULL DEFAULT NULL COMMENT '登录设备',
+                              `og_ip` varchar(200)  NULL DEFAULT NULL COMMENT '登录ip',
                               PRIMARY KEY (`og_id`) USING BTREE
 ) COMMENT = '用户在线列表' ;

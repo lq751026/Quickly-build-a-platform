@@ -27,7 +27,7 @@ public class LogAop {
      @Autowired
      private TLogService logService;
 
-    @Pointcut("execution(public * com.object.module.lq.sys.controller.LoginController.login(..))")
+    @Pointcut("execution(public * com.object.module.lq.sys.controller.TLoginController.login(..))")
     public void log() {
     }
 

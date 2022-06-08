@@ -9,6 +9,7 @@ import com.alibaba.excel.EasyExcel;
 import com.object.module.lq.sys.entity.TUserEntity;
 import com.object.module.lq.sys.ov.TUserAndAddUser;
 import com.object.module.lq.sys.service.TUserService;
+import com.object.utils.ExcelUtile;
 import com.object.utils.PasswordEncryp;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.object.utils.PageUtils;
 import com.object.utils.Q;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -112,6 +114,13 @@ public class TUserController {
         EasyExcel.write(response.getOutputStream(), TUserEntity.class).sheet("用户信息").doWrite(list);
         return Q.ok().put("data", response.getOutputStream());
     }
+
+    @PostMapping("/import")
+    public Q export(MultipartFile file) throws IOException {
+        ExcelUtile<TUserEntity> excelUtile=new ExcelUtile<>();
+        return excelUtile.imports(file.getInputStream(), userService, TUserEntity.class);
+    }
+
 
 
     /**

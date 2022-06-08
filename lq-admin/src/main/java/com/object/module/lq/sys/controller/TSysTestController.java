@@ -1,6 +1,7 @@
 package com.object.module.lq.sys.controller;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.object.module.lq.sys.service.TRoutingService;
 import com.object.utils.Q;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TSysTestController {
 
-    @Autowired
-    private TRoutingService routingService;
     @GetMapping()
-    public Q  getAll(){
-        return Q.ok().put("data","null");
+    public Q  getAll(String token){
+        return Q.ok().put("data", StpUtil.getLoginIdByToken(token));
     }
 }

@@ -79,15 +79,15 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
         }).collect(Collectors.toList());
 
         List<TRouterEntity> routers = new ArrayList<>();
-        for (TRoutingEntity tRoutingEntity : list) {
-            String pathName = tRoutingEntity.getPath().replaceAll("/", "");
-            TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(), tRoutingEntity.getPath(), pathName);
+        for (TRoutingEntity tRoutingEntity : collect) {
+            String pathName = tRoutingEntity.getPath();
+            TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(), "/"+tRoutingEntity.getPath(), pathName);
 
             routerEntity.setMeta(new TMetaEntity(tRoutingEntity.getMenuName(), true, tRoutingEntity.getIcon(), 2));
             List<TRouterEntity> routerEntities = new ArrayList<>();
             if (tRoutingEntity.getChildren()!=null) {
                 for (TRoutingEntity child : tRoutingEntity.getChildren()) {
-                    String pathName1 = child.getPath().replaceAll("/", "");
+                    String pathName1 = child.getPath();
                     TRouterEntity routerEntity1 = new TRouterEntity(child.getId(), pathName + pathName1, pathName + pathName1);
                     routerEntity1.setMeta(new TMetaEntity(child.getId(), child.getMenuName(), true, child.getIcon(), 2, "['*']"));
                     routerEntities.add(routerEntity1);

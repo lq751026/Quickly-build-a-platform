@@ -1,11 +1,11 @@
 package com.object;
 
 
-import com.object.module.lq.sys.entity.ChatMesagger;
-import com.object.module.lq.sys.entity.TMetaEntity;
-import com.object.module.lq.sys.entity.TRouterEntity;
-import com.object.module.lq.sys.entity.TRoutingEntity;
+import com.alibaba.excel.EasyExcel;
+import com.object.module.lq.sys.entity.*;
 import com.object.module.lq.sys.service.TRoutingService;
+import com.object.module.lq.sys.service.TUserService;
+import com.object.utils.ExcelUtile;
 import com.object.utils.NubersUtile;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentPBEConfig;
@@ -102,10 +102,22 @@ class ObjectApplicationTests {
 
 
 
+  @Autowired
+  private TUserService userService;
 
     @Test
      public  void  rounter(){
+        ExcelUtile<ImportTUserEntity> user=new ExcelUtile<>();
+        String fileName = "D:\\LiQingCode\\code\\导入测试数据.xlsx";
+        user.imports(fileName,userService,ImportTUserEntity.class);
+    }
 
+    @Test
+    public void wirder(){
+        String fileName = System.getProperty("user.dir")+ "write" + System.currentTimeMillis() + ".xlsx";
+        // 这里 需要指定写用哪个class去读，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        // 如果这里想使用03 则 传入excelType参数即可
+        EasyExcel.write(fileName, TUserEntity.class).sheet("模板").doWrite(userService.list());
     }
 
 }
