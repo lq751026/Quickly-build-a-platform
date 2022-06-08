@@ -13,8 +13,8 @@ import java.util.Date;
 @Data
 public class ImportTUserEntity {
 
-    private String urName,	urUsername,	urPassword	,urEmail;
-   private Integer urStuats	,urSex;
+    private String urName, urUsername, urPassword, urEmail;
+    private Integer urStuats, urSex;
 
     private String urAvatar;
     private Integer urReId;

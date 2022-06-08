@@ -27,8 +27,6 @@ public class TLoginController {
     /**
      * 验证码
      *
-     * @param request
-     * @param response
      * @throws Exception
      */
     @GetMapping("/captcha")
@@ -58,7 +56,6 @@ public class TLoginController {
     /**
      * 退出登录
      *
-     * @param userId
      * @return
      */
     @SaCheckLogin

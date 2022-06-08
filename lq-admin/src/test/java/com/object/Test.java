@@ -13,10 +13,10 @@ public class Test {
 
 
     public static void main(String[] args) throws UnknownHostException {
-        // 写法1：JDK8+ ,不用额外写一个DemoDataListener
-        // since: 3.0.0-beta1
-        String fileName = "D:\\LiQingCode\\code\\导入测试数据.xlsx";
-
-
+     //Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33
+        String data="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36 Edg/102.0.1245.33";
+        String substring = data.substring(data.indexOf("(")+1, data.indexOf(")"));
+        String pser = substring.substring(0, substring.indexOf(";"));
+        System.out.println(pser);
     }
 }

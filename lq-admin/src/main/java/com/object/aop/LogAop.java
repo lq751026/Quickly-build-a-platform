@@ -3,7 +3,7 @@ package com.object.aop;
 import lombok.extern.slf4j.Slf4j;
 import com.object.module.lq.sys.entity.TLogEntity;
 import com.object.module.lq.sys.service.TLogService;
-import com.object.utils.IpAddressUtil;
+import com.object.utils.OnlineTools;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -71,7 +71,7 @@ public class LogAop {
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         String url = request.getRequestURI();
-        String ip = IpAddressUtil.getIpAddress(request);
+        String ip = OnlineTools.getIpAddress(request);
         //设置执行的url
         sysLogEntity.setUrl(url);
         //设置来自执行的ip

@@ -13,17 +13,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TMetaEntity {
- private  Integer id;
- private  String locale;
- private  boolean requiresAuth;
- private String icon;
- private   int order;
- private String roles;
+    private Integer id;
+    private String locale;
+    private boolean requiresAuth;
+    private String icon;
+    private int order;
+    private String roles;
 
- public TMetaEntity(String locale, boolean requiresAuth, String icon, int order) {
-  this.locale = locale;
-  this.requiresAuth = requiresAuth;
-  this.icon = icon;
-  this.order = order;
- }
+    public TMetaEntity(String locale, boolean requiresAuth, String icon, int order) {
+        this.locale = locale;
+        this.requiresAuth = requiresAuth;
+        this.icon = icon;
+        this.order = order;
+    }
 }

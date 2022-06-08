@@ -230,27 +230,27 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
      */
     @Override
     public Q login(TUserEntity user, HttpServletRequest request) {
-       Q q=null;
+        Q q = null;
         //首页判断验证正确
         if (PasswordEncryp.IfPassowrd(user.getCaptcha(), user.getCodeEncryption())) {
             TUserEntity user1 = findLogin(user);
             if (user1 != null) {
                 //再次判断账号是不是启用
                 if (user1.getUrStuats() != TUserStatusCode.enable.stats) {
-                    q=  Q.error().put("msg", user1.getUrUsername()+"账号被冻结了...");
-                }else {
+                    q = Q.error().put("msg", user1.getUrUsername() + "账号被冻结了...");
+                } else {
                     //登录成功
                     //保存一下在线用户
-                    onlineListingService.saveLogin(user1,request);
+                    onlineListingService.saveLogin(user1, request);
                     StpUtil.login(user1.getUrId());
                     SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-                    q=  Q.ok().put("token", tokenInfo).put("userName", user1.getUrName()).put("urAvatar", user1.getUrAvatar());
+                    q = Q.ok().put("token", tokenInfo).put("userName", user1.getUrName()).put("urAvatar", user1.getUrAvatar());
                 }
             } else {
-                q=  Q.error().put("msg", "登录失败检查用户名或者密码!");
+                q = Q.error().put("msg", "登录失败检查用户名或者密码!");
             }
         } else {
-            q=  Q.error().put("msg", "验证码错误!");
+            q = Q.error().put("msg", "验证码错误!");
         }
         return q;
     }

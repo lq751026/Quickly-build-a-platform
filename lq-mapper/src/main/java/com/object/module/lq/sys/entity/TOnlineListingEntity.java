@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-    import java.io.Serializable;
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -23,27 +23,27 @@ import lombok.NoArgsConstructor;
 public class TOnlineListingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     @TableId(type = IdType.AUTO)
-            private Integer ogId;
-            /**
-         * 登录时间
-         */
-            private Date ogOnlineTime;
-            /**
-         * 登录用户名
-         */
-            private String ogUserName;
-            /**
-         * 用户id
-         */
-            private Integer ogUrId;
-            /**
-         * 登录设备
-         */
-            private String ogEquipment;
-            /**
-         * 登录ip
-         */
-            private String ogIp;
+    private Integer ogId;
+    /**
+     * 登录时间
+     */
+    private Date ogOnlineTime;
+    /**
+     * 登录用户名
+     */
+    private String ogUserName;
+    /**
+     * 用户id
+     */
+    private Integer ogUrId;
+    /**
+     * 登录设备
+     */
+    private String ogEquipment;
+    /**
+     * 登录ip
+     */
+    private String ogIp;
 
     public TOnlineListingEntity(Date ogOnlineTime, String ogUserName, Integer ogUrId, String ogEquipment, String ogIp) {
         this.ogOnlineTime = ogOnlineTime;
