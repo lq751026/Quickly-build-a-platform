@@ -1,5 +1,6 @@
 package com.object.module.lq.sys.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.object.dao.sys.TOnlineListingDao;
 import com.object.module.lq.sys.entity.TUserEntity;
@@ -10,6 +11,7 @@ import com.object.utils.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -52,6 +54,17 @@ public class TOnlineListingServiceImpl extends ServiceImpl<TOnlineListingDao, TO
         QueryWrapper<TOnlineListingEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("og_ur_id", urId);
         remove(wrapper);
+    }
+
+    @Override
+    public void outUserLogin(List<Integer> asList) {
+        List<TOnlineListingEntity> tOnlineListingEntities = listByIds(asList);
+        for (TOnlineListingEntity onlineListing : tOnlineListingEntities) {
+            //强制退出
+            StpUtil.logout(onlineListing.getOgUrId());
+        }
+        //再删除掉在线用户列表
+        removeByIds(asList);
     }
 
 }

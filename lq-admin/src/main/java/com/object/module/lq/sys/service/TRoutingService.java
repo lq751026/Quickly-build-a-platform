@@ -2,10 +2,8 @@ package com.object.module.lq.sys.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.object.module.lq.sys.entity.TRoutingEntity;
-import com.object.utils.PageUtils;
 import com.object.utils.Q;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,11 +15,13 @@ import java.util.Map;
  */
 public interface TRoutingService extends IService<TRoutingEntity> {
 
-    PageUtils queryPage(Map<String, Object> params);
+
 
     Q listOrderBy(Integer userId);
 
 
     Map<String, String> findUserIByroutId(Integer userId, Integer routId);
+
+    Q treeAll();
 }
 

@@ -31,15 +31,6 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
     @Autowired
     private TRoutingService routingService;
 
-    @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        IPage<TRoutingEntity> page = this.page(
-                new Query<TRoutingEntity>().getPage(params),
-                new QueryWrapper<TRoutingEntity>()
-        );
-
-        return new PageUtils(page);
-    }
 
     /**
      * 根据当前的用户id去查询当前的授权识别  根据我们编写的工具类去解析当前我们权限
@@ -80,25 +71,35 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
 
         List<TRouterEntity> routers = new ArrayList<>();
         for (TRoutingEntity tRoutingEntity : collect) {
-            String pathName = tRoutingEntity.getPath();
-            TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(), "/"+tRoutingEntity.getPath(), pathName);
-
-            routerEntity.setMeta(new TMetaEntity(tRoutingEntity.getMenuName(), true, tRoutingEntity.getIcon(), 2));
-            List<TRouterEntity> routerEntities = new ArrayList<>();
-            if (tRoutingEntity.getChildren()!=null) {
-                for (TRoutingEntity child : tRoutingEntity.getChildren()) {
-                    String pathName1 = child.getPath();
-                    TRouterEntity routerEntity1 = new TRouterEntity(child.getId(), pathName + pathName1, pathName + pathName1);
-                    routerEntity1.setMeta(new TMetaEntity(child.getId(), child.getMenuName(), true, child.getIcon(), 2, "['*']"));
-                    routerEntities.add(routerEntity1);
-                }
-                routerEntity.setChildren(routerEntities);
-            }
-            routers.add(routerEntity);
+            routers.add(data(tRoutingEntity));
         }
 
         return Q.ok().put("data", routers);
     }
+
+     private TRouterEntity data(TRoutingEntity tRoutingEntity){
+         String pathName = tRoutingEntity.getPath();
+         TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(), "/" + tRoutingEntity.getPath(), pathName);
+
+         routerEntity.setMeta(new TMetaEntity(tRoutingEntity.getMenuName(), true, tRoutingEntity.getIcon(), 2));
+         List<TRouterEntity> routerEntities = new ArrayList<>();
+         if (tRoutingEntity.getChildren() != null) {
+             for (TRoutingEntity child : tRoutingEntity.getChildren()) {
+
+                 TRouterEntity routerEntity1=null;
+                     String pathName1 = child.getPath();
+                      routerEntity1 = new TRouterEntity(child.getId(), "/" +  pathName1,  pathName1);
+                     routerEntity1.setMeta(new TMetaEntity(child.getId(), child.getMenuName(), true, child.getIcon(), 2, "['*']"));
+                 if(child.getChildren()!=null) {
+                     TRouterEntity data = data(child);
+                     routerEntity1.setChildren(data.getChildren());
+                 }
+                     routerEntities.add(routerEntity1);
+             }
+             routerEntity.setChildren(routerEntities);
+         }
+         return  routerEntity;
+     }
 
     /**
      * 当前路由的权限查询
@@ -122,6 +123,19 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
             map1 = map.get(routId);
         }
         return map1;
+    }
+
+    @Override
+    public Q treeAll() {
+        List<TRoutingEntity> list = list();
+        //找出一级分类
+        List<TRoutingEntity> collect = list.stream().filter((SortEntity -> {
+            return SortEntity.getParentId() == 0;
+        })).map(menu -> {
+            menu.setChildren(getChider(menu, list));
+            return menu;
+        }).collect(Collectors.toList());
+        return Q.ok().put("data", collect);
     }
 
     public List<TRoutingEntity> getChider(TRoutingEntity menu, List<TRoutingEntity> list) {

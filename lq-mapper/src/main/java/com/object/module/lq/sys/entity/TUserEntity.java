@@ -3,13 +3,8 @@ package com.object.module.lq.sys.entity;
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.write.style.ContentStyle;
-import com.alibaba.excel.annotation.write.style.HeadStyle;
 import com.baomidou.mybatisplus.annotation.*;
-import com.object.excelhandler.UserSexHandler;
-import com.object.excelhandler.UserStateHandler;
 import lombok.Data;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 import java.io.Serializable;
 import java.util.Date;

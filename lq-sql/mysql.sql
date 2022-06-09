@@ -89,35 +89,19 @@ CREATE TABLE `t_routing`  (
                               `id` int(0) NOT NULL AUTO_INCREMENT,
                               `create_time` datetime NOT NULL COMMENT '创建时间',
                               `path` varchar(100)  NOT NULL COMMENT '路由',
-                              `hidden` tinyint(1) NULL DEFAULT 1 COMMENT '路由的可见 true:不可见  默认是：false可见',
                               `parent_id` int(0) NULL DEFAULT 0 COMMENT '上级id',
                               `menu_name` varchar(20)  NULL DEFAULT NULL COMMENT '菜单名',
                               `icon` char(50)  NULL DEFAULT NULL COMMENT '图标',
-                              `perms` varchar(30)  NULL DEFAULT NULL COMMENT '授权识别',
-                              `component_url` varchar(50)  NULL DEFAULT NULL COMMENT '绝对路由的位置',
-                              `redirect` varchar(50)  NULL DEFAULT NULL COMMENT '重定向',
                               PRIMARY KEY (`id`) USING BTREE
 ) COMMENT = '路由表' ;
 
 -- ----------------------------
 -- Records of t_routing
 -- ----------------------------
-INSERT INTO `t_routing` VALUES (1, '2021-07-28 14:44:00', '/', 1, 0, '首页', 'el-icon-s-tools', NULL, '', '/sye');
-INSERT INTO `t_routing` VALUES (3, '2021-07-27 14:33:00', '/admin', 1, 0, '系统管理', 'el-icon-menu', NULL, NULL, '/admin/user');
-INSERT INTO `t_routing` VALUES (4, '2021-07-27 14:35:00', 'user', 1, 3, '管理员', 'el-icon-user-solid', NULL, 'object/index', NULL);
-INSERT INTO `t_routing` VALUES (5, '2021-07-27 14:36:00', 'role', 1, 3, '角色', 'el-icon-dessert', NULL, 'object/role', NULL);
-INSERT INTO `t_routing` VALUES (6, '2021-07-27 14:36:00', 'log', 1, 3, '日志', 'el-icon-s-order', NULL, 'log/log', NULL);
-INSERT INTO `t_routing` VALUES (8, '2021-07-27 14:52:00', 'index', 1, 3, '路由菜单', 'el-icon-tickets', NULL, 'routing/routing', NULL);
-INSERT INTO `t_routing` VALUES (13, '2021-07-27 15:56:49', 'home', 0, 50, '个人资料', 'table', '', 'my/home', '');
-INSERT INTO `t_routing` VALUES (24, '2021-07-28 14:44:00', '/sye', 0, 1, '首页', 'el-icon-setting', '', 'dashboard/index', '');
-INSERT INTO `t_routing` VALUES (28, '2021-07-29 13:48:00', '/admin/sql', 1, 3, 'sql日志', 'el-icon-folder', '', 'log/logsql', '');
-INSERT INTO `t_routing` VALUES (50, '2021-07-26 13:34:00', '/home', 0, 0, '我的', 'table', NULL, NULL, '/home/hoome');
-INSERT INTO `t_routing` VALUES (51, '2021-08-01 17:22:39', '/edit', 1, 3, '富文本编辑器', 'el-icon-ice-drink', '', 'edit/edit', '');
-INSERT INTO `t_routing` VALUES (53, '2021-08-25 16:15:53', '/test/test', 1, 52, '测试页面', 'el-icon-s-order', '', 'test/test', '');
-INSERT INTO `t_routing` VALUES (54, '2021-08-25 16:39:38', '/test/role', 1, 52, '角色', 'el-icon-user-solid', NULL, 'test/role', NULL);
-INSERT INTO `t_routing` VALUES (56, '2021-08-26 14:22:31', '/test/yh', 1, 55, '用户', 'el-icon-user-solid', '', 'other/tuser', '');
-INSERT INTO `t_routing` VALUES (58, '2021-08-28 23:47:07', '/test/index', 1, 57, '测试页面', 'el-icon-setting', '', 'test/index', '');
-INSERT INTO `t_routing` VALUES (59, '2022-05-13 15:36:01', '/api', 1, 3, '后端接口', 'el-icon-star-off', '', 'api/api', '');
+INSERT INTO `t_routing` VALUES (3, '2021-07-27 14:33:00', 'sys', 0, 'menu.sys', 'icon-wifi');
+INSERT INTO `t_routing` VALUES (4, '2021-07-27 14:35:00', 'sysUser', 3, 'menu.sys.sysUser', 'icon-thunderbolt');
+INSERT INTO `t_routing` VALUES (60, '2021-07-27 14:35:00', 'LuYou', 3, 'menu.sys.sysRouter', 'icon-list');
+INSERT INTO `t_routing` VALUES (63, '2022-06-09 12:05:00', 'sysRole', 3, 'menu.sys.sysRole', 'icon-file-pdf');
 
 -- ----------------------------
 -- Table structure for t_user

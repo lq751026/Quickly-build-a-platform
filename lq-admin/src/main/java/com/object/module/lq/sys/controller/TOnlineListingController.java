@@ -72,7 +72,7 @@ public class TOnlineListingController {
      */
     @RequestMapping("/delete")
     public Q delete(@RequestBody Integer[] ogIds) {
-            tOnlineListingService.removeByIds(Arrays.asList(ogIds));
+            tOnlineListingService.outUserLogin(Arrays.asList(ogIds));
             return Q.ok();
     }
 

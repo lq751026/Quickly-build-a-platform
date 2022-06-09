@@ -35,15 +35,6 @@ public class TRoutingEntity implements Serializable {
      * 路由
      */
     private String path;
-    /**
-     * 路由的可见 1:不可见  默认是：0可见
-     */
-    private Integer hidden;
-
-    /**
-     * 重定向 一级路由才有的
-     */
-    private  String redirect;
 
     /**
      * 上级id
@@ -57,14 +48,6 @@ public class TRoutingEntity implements Serializable {
      * 图标
      */
     private String icon;
-    /**
-     * 授权识别
-     */
-    private String perms;
-    /**
-     * 绝对路由的位置
-     */
-    private String componentUrl;
 
     /**
      * 子路由

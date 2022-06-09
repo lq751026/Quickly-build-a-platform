@@ -6,6 +6,7 @@ import com.object.module.lq.sys.entity.TUserEntity;
 import com.object.utils.PageUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,5 +23,7 @@ public interface TOnlineListingService extends IService<TOnlineListingEntity> {
     void saveLogin(TUserEntity user1, HttpServletRequest request);
 
     void deleteUserId(Integer urId);
+
+    void outUserLogin(List<Integer> asList);
 }
 

@@ -7,6 +7,7 @@ import com.object.module.lq.sys.service.TRoutingService;
 import com.object.module.lq.sys.service.TUserService;
 import com.object.utils.ExcelUtile;
 import com.object.utils.NubersUtile;
+import com.object.utils.Q;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentPBEConfig;
 import org.junit.jupiter.api.Test;
@@ -118,6 +119,14 @@ class ObjectApplicationTests {
         // 这里 需要指定写用哪个class去读，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
         // 如果这里想使用03 则 传入excelType参数即可
         EasyExcel.write(fileName, TUserEntity.class).sheet("模板").doWrite(userService.list());
+    }
+
+
+
+    @Test
+    public  void dada(){
+        Q listOrderBy = routingService.listOrderBy(1);
+        System.out.println(listOrderBy.getData().get("data"));
     }
 
 }

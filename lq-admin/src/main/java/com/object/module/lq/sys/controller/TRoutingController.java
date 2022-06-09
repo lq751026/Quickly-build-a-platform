@@ -2,17 +2,14 @@ package com.object.module.lq.sys.controller;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
-import cn.dev33.satoken.stp.StpUtil;
 import com.object.module.lq.sys.entity.TRoutingEntity;
 import com.object.module.lq.sys.service.TRoutingService;
 import com.object.utils.GetUserId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.object.utils.PageUtils;
 import com.object.utils.Q;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +31,9 @@ public class TRoutingController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    public Q list(@RequestParam Map<String, Object> params) {
-        PageUtils page = routingService.queryPage(params);
-        return Q.ok().put("page", page);
+    @RequestMapping("/treeAll")
+    public Q list() {
+        return routingService.treeAll();
     }
 
     /**
