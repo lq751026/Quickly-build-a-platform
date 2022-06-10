@@ -46,7 +46,7 @@
 ### 第三步
 解压我们lq-vue下的压缩包 解压过后
 运行命令 npm run dev
-###>访问地址http://localhost:3000/
+### 访问地址http://localhost:3000/
  
 
 
