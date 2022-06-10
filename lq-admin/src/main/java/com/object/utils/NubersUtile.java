@@ -23,10 +23,21 @@ public class NubersUtile {
              for (int j = 0; j <split.length ; j++) {
                   if(split[j].equals(list.get(i).getId()+"")){
                        list1.add(list.get(i));
+                      pserEmlent(list.get(i),list,list1);
                   }
              }
          }
        return list1;
+     }
+
+
+     private static void pserEmlent(TRoutingEntity routing,List<TRoutingEntity> list,List<TRoutingEntity> list1){
+         for (TRoutingEntity entity : list) {
+              if (entity.getId()==routing.getParentId()){
+                  list1.add(entity);
+                  if (routing.getParentId()!=0)pserEmlent(entity,list,list1);
+              }
+         }
      }
 
 }

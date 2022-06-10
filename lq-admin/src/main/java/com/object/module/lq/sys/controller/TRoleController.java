@@ -1,17 +1,16 @@
 package com.object.module.lq.sys.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.object.module.lq.sys.entity.TPurview;
 import com.object.module.lq.sys.entity.TRoleEntity;
 import com.object.module.lq.sys.service.TRoleService;
+import com.object.utils.PageUtils;
+import com.object.utils.Q;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.object.utils.PageUtils;
-import com.object.utils.Q;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -61,7 +60,7 @@ public class TRoleController {
     public Q info(@PathVariable("reId") Integer reId) {
         TRoleEntity role = roleService.getById(reId);
 
-        return Q.ok().put("role", role);
+        return Q.ok().put("data", role);
     }
 
     /**
@@ -70,7 +69,6 @@ public class TRoleController {
     @RequestMapping("/save")
     public Q save(@RequestBody TRoleEntity role) {
         roleService.save(role);
-
         return Q.ok();
     }
 
@@ -80,7 +78,6 @@ public class TRoleController {
     @RequestMapping("/update")
     public Q update(@RequestBody TRoleEntity role) {
         roleService.updateById(role);
-
         return Q.ok();
     }
 

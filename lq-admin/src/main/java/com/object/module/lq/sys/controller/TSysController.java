@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sys")
 public class TSysController {
 
+
+    /**
+     * 系统信息查询
+     * @return
+     */
     @GetMapping
     public Q sysAll(){
        return Q.ok().put("jvm",SysUtile.printSummary());

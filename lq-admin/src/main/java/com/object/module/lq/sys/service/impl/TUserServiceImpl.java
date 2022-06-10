@@ -2,38 +2,35 @@ package com.object.module.lq.sys.service.impl;
 
 import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
-import com.object.module.lq.sys.entity.TUserEntity;
-import com.object.module.lq.sys.ov.TGoodFriendOv;
-import com.object.module.lq.sys.ov.TUserAndAddUser;
-import com.object.module.lq.sys.service.TOnlineListingService;
-import com.object.module.lq.sys.service.TUserService;
-import com.object.statuscode.TUserStatusCode;
-import com.object.utils.Q;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.object.dao.sys.TUserDao;
 import com.object.module.lq.chatroom.entity.TAddRecordEntity;
 import com.object.module.lq.chatroom.entity.TGoodFriendEntity;
 import com.object.module.lq.chatroom.service.TAddRecordService;
 import com.object.module.lq.chatroom.service.TGoodFriendService;
+import com.object.module.lq.sys.entity.TUserEntity;
+import com.object.module.lq.sys.ov.TGoodFriendOv;
+import com.object.module.lq.sys.ov.TUserAndAddUser;
+import com.object.module.lq.sys.service.TOnlineListingService;
 import com.object.module.lq.sys.service.TRoleService;
+import com.object.module.lq.sys.service.TUserService;
+import com.object.statuscode.TUserStatusCode;
+import com.object.utils.PageUtils;
 import com.object.utils.PasswordEncryp;
+import com.object.utils.Q;
+import com.object.utils.Query;
 import lombok.val;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.object.utils.PageUtils;
-import com.object.utils.Query;
-
-import com.object.dao.sys.TUserDao;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @Service("TUserServiceImpl")
@@ -61,10 +58,10 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
         String endTiem = (String) params.get("endTiem");
         String status = (String) params.get("status");
         if (StringUtils.isNotEmpty(id)) wrapper.eq("ur_id", id);
-        if (StringUtils.isNotEmpty(name)) wrapper.or().eq("ur_username", name);
-        if (StringUtils.isNotEmpty(createTime)) wrapper.or().ge("create_time", createTime);
-        if (StringUtils.isNotEmpty(endTiem)) wrapper.or().le("create_time", endTiem);
-        if (StringUtils.isNotEmpty(status)) wrapper.or().eq("ur_stuats", status);
+        if (StringUtils.isNotEmpty(name)) wrapper.likeRight("ur_username", name);
+        if (StringUtils.isNotEmpty(createTime)) wrapper.ge("create_time", createTime);
+        if (StringUtils.isNotEmpty(endTiem)) wrapper.le("create_time", endTiem);
+        if (StringUtils.isNotEmpty(status)) wrapper.eq("ur_stuats", status);
         IPage<TUserEntity> page = this.page(new Query<TUserEntity>().getPage(params), wrapper);
         for (TUserEntity user : page.getRecords()) {
             user.setRole(roleServicel.getById(user.getUrReId()));

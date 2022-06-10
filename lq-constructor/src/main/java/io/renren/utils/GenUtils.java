@@ -2,6 +2,7 @@ package io.renren.utils;
 
 import io.renren.config.MongoManager;
 import io.renren.entity.ColumnEntity;
+import io.renren.entity.SelectEntity;
 import io.renren.entity.TableEntity;
 import io.renren.entity.mongo.MongoDefinition;
 import io.renren.entity.mongo.MongoGeneratorEntity;
@@ -330,21 +331,21 @@ public class GenUtils {
             return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + moduleName + File.separator + className + "Dao.xml";
         }
 
-        if (template.contains("menu.sql.vm")) {
+       /* if (template.contains("menu.sql.vm")) {
             return className.toLowerCase() + "_menu.sql";
-        }
+        }*/
 
         if (template.contains("index.vue.vm")) {
             return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
                     File.separator + moduleName + File.separator + className.toLowerCase() + ".vue";
         }
 
-        if (template.contains("add-or-update.vue.vm")) {
+   /*     if (template.contains("add-or-update.vue.vm")) {
             return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
                     File.separator + moduleName + File.separator + className.toLowerCase() + "-add-or-update.vue";
-        }
+        }*/
         if(template.contains("api.js.vm")){
-             return "main" + File.separator + "resources" + File.separator + "src"+File.separator+"api"+File.separator+"modules"+File.separator+className.toLowerCase()+".js";
+             return "main" + File.separator + "resources" + File.separator + "src"+File.separator+"api"+File.separator+"sys"+File.separator+className.toLowerCase()+".js";
         }
 
         return null;

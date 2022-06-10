@@ -1,174 +1,370 @@
 <template>
-  <div class="mod-config">
-    <center>
-    <a-table :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
-      <a-table-column>
-        <el-input v-model="dataForm.key" placeholder="参数名" clearable></el-input>
-      </a-table-column>
-      <a-table-column>
-        <el-button @click="getDataList()">查询</el-button>
-        <el-button  v-if="purview.add == role.add" type="primary" @click="addOrUpdateHandle()">新增</el-button>
-        <el-button v-if="purview.delete == role.delete" type="danger" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-      </a-table-column>
-    </a-table>
-    </center>
-    <a-table
-      :data="dataList"
-      border
-      v-loading="dataListLoading"
-      @selection-change="selectionChangeHandle"
-      style="width: 100%;">
-      <template #columns>
-      <a-table-column
-              :bordered="false"
-               row-key="id"
-      >
-      </a-table-column>
-#foreach($column in $columns)
-      <a-table-column
-          title="${column.attrname}"
-          label="${column.comments}">
-      </a-table-column>
-#end
-      <a-table-column
-        fixed="right"
-        header-align="center"
-        align="center"
-        width="150"
-        label="操作">
-        <template slot-scope="scope">
-          <el-button v-if="purview.update == role.update" type="text" size="small" @click="addOrUpdateHandle(scope.row.${pk.attrname})">修改</el-button>
-          <el-button v-if="purview.delete == role.delete" type="text" size="small" @click="deleteHandle(scope.row.${pk.attrname})">删除</el-button>
-        </template>
-      </a-table-column>
-      </template>
-    </a-table>
-    <center>
-    <a-pagination
-       background
-      :pager-count="10"
-      @size-change="sizeChangeHandle"
-      @current-change="currentChangeHandle"
-      :current-page="pageIndex"
-      :page-sizes="[10, 20, 50, 100]"
-      :page-size="pageSize"
-      :total="totalPage"
-      layout="total, sizes, prev, pager, next, jumper">
-    </a-pagination>
-      </center>
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+  <div class="container">
+    <headMenu />
+    <a-card class="general-card" :title="'查询' + $t(menusName)">
+      <!--  查询   -->
+      <a-row>
+        <a-col :flex="1">
+          <a-form :label-col-props="{ span: 6 }" :wrapper-col-props="{ span: 18 }" label-align="left">
+            <a-row :gutter="18">
+              <a-col :span="9">
+                <a-form-item field="number" label="主键">
+                  <a-input placeholder="主键" v-model="pageData.id" />
+                </a-form-item>
+              </a-col>
+              <a-col :span="9">
+                <a-form-item field="name" label="名称">
+                  <a-input v-model="pageData.name" placeholder="名称" />
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="9">
+                <a-form-item field="createdTime" :label="$t('searchTable.form.createdTime')">
+                  <a-range-picker style="width: 100%" v-model="pageData.createdTime" />
+                </a-form-item>
+              </a-col>
+              <a-col :span="9">
+                <a-form-item field="status" :label="$t('searchTable.form.status')">
+                  <!--      <a-select
+                    :options="statusOptions"
+                    v-model="pageData.status"
+                    :placeholder="$t('searchTable.form.selectDefault')"
+                  /> -->
+
+                  <a-select v-model="pageData.status" :style="{ width: '320px' }"
+                            :placeholder="$t('searchTable.form.selectDefault')">
+                    <a-option :value="1">启用</a-option>
+                    <a-option :value="0">冻结</a-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-form>
+        </a-col>
+
+        <a-col :flex="'86px'" style="text-align: right; position: relative; right: 200px">
+          <a-space direction="vertical" :size="18">
+            <a-button type="primary" @click="search">
+              <template #icon>
+                <icon-search />
+              </template>
+              {{ $t('searchTable.form.search') }}
+            </a-button>
+            <a-button @click="reset">
+              <template #icon>
+                <icon-refresh />
+              </template>
+              {{ $t('searchTable.form.reset') }}
+            </a-button>
+          </a-space>
+        </a-col>
+      </a-row>
+      <a-row style="margin-bottom: 16px">
+        <a-col :span="16">
+          <a-space>
+            <a-button type="primary" @click="updateAndAdd(undefined)">
+              <template #icon>
+                <icon-plus />
+              </template>
+              {{ $t('searchTable.operation.create') }}
+            </a-button>
+          </a-space>
+        </a-col>
+        <a-col :span="8" style="text-align: right">
+          <a-button @click="subitmDeleteIds">
+            <template #icon>
+              <icon-delete />
+            </template>
+            批量删除
+          </a-button>
+        </a-col>
+      </a-row>
+
+      <!--  渲染数据  -->
+      <a-spin :loading="loading" tip="This may take a while..." style="width: 100%">
+        <a-table row-key="urId" :bordered="false" :data="data" @selection-change="selectionChange" :row-selection="{
+          type: 'checkbox',
+          showCheckedAll: true,
+          checkStrictly: true,
+        }" style="margin-top: 30px" :pagination="false" :hoverable="true">
+          <template #columns>
+
+            #foreach($column in $columns)
+              <a-table-column
+                      data-index="${column.attrname}"
+                      title="${column.comments}">
+              </a-table-column>
+            #end
+
+            <a-table-column title="修改">
+              <template #cell="{ record }">
+                <a-button @click="updateAndAdd(record.${pk.attrname})" type="outline">编辑</a-button>
+              </template>
+            </a-table-column>
+
+            <a-table-column title="删除">
+              <template #cell="{ record }">
+                <a-popconfirm @ok="submitDelete(record.${pk.attrname})" content="Are you sure you want to delete?">
+                  <a-button>
+                    <template #icon>
+                      <icon-delete />
+                    </template>
+                  </a-button>
+                </a-popconfirm>
+              </template>
+            </a-table-column>
+          </template>
+        </a-table>
+
+        <!--  分页  -->
+        <a-pagination :total="pageData.totalCount" show-jumper show-page-size show-total show-current
+                      :current="pageData.page" :page-size="pageData.limit" :page-size-options="[10, 20, 50, 100]"
+                      @change="changePage" @page-size-change="limitChange" />
+      </a-spin>
+      <!--  编辑和添加的对话框
+       -->
+      <a-modal :visible="ediVisible" @ok="handleSubmit" @cancel="handleCancel" width="500">
+        <template #title>{{ form.${pk.attrname} ? '编辑' : '添加' }}</template>
+        <div>
+          <a-form :model="form" :style="{ width: '100%' }">
+            #foreach($column in $columns)
+              #if($column.columnName != $pk.columnName)
+                <a-form-item label="${column.comments}" field="${column.attrname}">
+                  <a-input v-model="form.${column.attrname}" placeholder="${column.comments}"></a-input>
+                </a-form-item>
+              #end
+            #end
+          </a-form>
+        </div>
+      </a-modal>
+    </a-card>
   </div>
 </template>
 
 <script>
-  import AddOrUpdate from './${pathName}-add-or-update'
-  import api from "@/api/modules/${pathName}";
-  import rout from "@/api/routing";
+  import api from '@/api/sys/${pathName}';
+  import headMenu from '@/components/headMenu/headMenu.vue';
   export default {
-    data () {
+    components: { headMenu },
+    data() {
       return {
-        role: {
-          update: #[[this.$role.role_update]]#,
-          delete: #[[this.$role.role_delete]]#,
-          add: #[[this.$role.role_add]]#,
+        form: {},
+        loading: true,
+        deleteIds: [],
+        ediVisible: false,
+        menusName: this.$router.currentRoute.value.meta.locale,
+        pageData: {
+          id: '',
+          name: '',
+          createTime: '',
+          endTiem: '',
+          status: '',
+          page: '1',
+          limit: 10,
+          totalCount: 0,
+          totalPage: 0,
         },
-        purview: {},
-        dataForm: {
-          key: ''
-        },
-        dataList: [],
-        pageIndex: 1,
-        pageSize: 10,
-        totalPage: 0,
-        dataListLoading: false,
-        dataListSelections: [],
-        addOrUpdateVisible: false
-      }
+
+        data: [],
+      };
     },
-    components: {
-      AddOrUpdate
-    },
-    created () {
-      this.getDataList()
-      this.getPurview();
-    },
+
     methods: {
       /**
-       * 获取当前页面的权限
+       * 取消弹窗
        */
-      getPurview() {
-        rout.purview(this.$route.meta.id).then((res) => {
-          this.purview = res.data.data;
+      handleCancel() {
+        this.ediVisible = false;
+        this.form = {  }
+      },
+
+      /**
+       * 提交判断是添加还是删除
+       */
+      handleSubmit() {
+        if (this.form.${pk.attrname} !== undefined) {
+          this.updateSubmit();
+        } else {
+          this.addSumeit();
+        }
+      },
+
+      /**
+       * 提交修改
+       */
+      updateSubmit() {
+        api.updateAdd(this.form).then((res) => {
+          if (res.data.code === 200) {
+            //删除成功
+            this.$notification.success('修改成功!');
+            this.reset();
+            this.form = {  }
+          } else {
+            this.$notification.error('修改失败!');
+          }
         });
       },
-      // 获取数据列表
-      getDataList () {
-        this.dataListLoading = true
-        var parms={
-          'page': this.pageIndex,
-          'limit': this.pageSize,
-          'key': this.dataForm.key
-        }
-        api.list(parms).then(({data}) => {
-          if (data) {
-            this.dataList = data.page.list
-            this.totalPage = data.page.totalCount
+
+      /**
+       *  添加提交
+       */
+      addSumeit() {
+        api.updateAdd(this.form).then((res) => {
+          if (res.data.code === 200) {
+            //添加成功
+            this.$notification.success('添加成功!');
+            this.reset();
+            this.ediVisible = false;
+            this.form = {  }
           } else {
-            this.dataList = []
-            this.totalPage = 0
+            this.$notification.error('添加失败!');
           }
-          this.dataListLoading = false
-        })
+        });
       },
-      // 每页数
-      sizeChangeHandle (val) {
-        this.pageSize = val
-        this.pageIndex = 1
-        this.getDataList()
+      /**
+       * 新添加的方法
+       */
+      addInfo() {
+        this.ediVisible = true;
       },
-      // 当前页
-      currentChangeHandle (val) {
-        this.pageIndex = val
-        this.getDataList()
+
+      /**
+       * 判断当前的修改还是添加
+       */
+      updateAndAdd(id) {
+        if (id !== undefined) {
+          this.updateInfo(id);
+        } else {
+          this.addInfo();
+        }
       },
-      // 多选
-      selectionChangeHandle (val) {
-        this.dataListSelections = val
+
+      /**
+       * 修改前先查询id
+       */
+      updateInfo(Id) {
+        this.loading = true;
+        api.info(Id).then((res) => {
+          this.form = res.data.data.data;
+          this.ediVisible = true;
+          this.loading = false;
+        });
       },
-      // 新增 / 修改
-      addOrUpdateHandle (id) {
-        this.addOrUpdateVisible = true
-        #[[this.$nextTick(() => {]]#
-          this.$refs.addOrUpdate.init(id)
-        })
+
+      /**
+       * 删除选中的方法
+       */
+      subitmDeleteIds() {
+        api.delete(this.deleteIds).then((res) => {
+          if (res.data.code === 200) {
+            //删除成功
+            this.$notification.success('删除成功!');
+            this.reset();
+          } else {
+            this.$notification.error('删除失败!');
+          }
+        });
       },
-      // 删除
-      deleteHandle (id) {
-        var ids = id ? [id] : this.dataListSelections.map(item => {
-          return item.${pk.attrname}
-        })
-        #[[this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {]]#
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-        api.delete(ids).then((res) => {
-            if (res.code==200) {
-              #[[this.$message({]]#
-                message: '操作成功',
-                type: 'success',
-                duration: 1500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            } else {
-              #[[this.$message.error(data.msg)]]#
-            }
-          })
-        })
+      /**
+       * 查询数据
+       */
+      search() {
+        //获取当前的开始时间和结束时间
+        if (this.pageData.createTime) {
+          this.pageData.createTime = this.pageData.createdTime[0];
+          this.pageData.endTiem = this.pageData.createdTime[1];
+        }
+
+        //发送请求
+        this.getList();
+      },
+      /**
+       *  刷新查询的数据
+       */
+      reset() {
+        this.ediVisible = false
+        this.pageData = {
+          id: '',
+          name: '',
+          createTime: '',
+          endTime: '',
+          status: '',
+          page: '1',
+          limit: 10,
+          totalCount: 0,
+          totalPage: 0,
+        };
+        this.getList();
+      },
+
+      /**
+       *  选中
+       */
+      selectionChange(data) {
+        this.deleteIds = data;
+      },
+      /**
+       *  选择页码
+       */
+      changePage(currPage) {
+        this.pageData.page = currPage;
+        this.getList();
+      },
+      //选择分页大小
+      limitChange(limit) {
+        this.pageData.limit = limit;
+        this.getList();
+      },
+
+      /**
+       *  获取当前数据
+       */
+      getList() {
+        this.loading = true;
+        api.list(this.pageData).then((res) => {
+          const page = res.data.data.page;
+          this.data = page.list;
+          this.pageData.page =
+                  page.currPage >= page.totalPage ? page.totalPage : page.currPage;
+          this.pageData.limit = page.limit;
+          this.pageData.totalCount = page.totalCount;
+          this.pageData.totalPage = page.totalPage;
+          this.loading = false;
+        });
+      },
+      /**
+       *  删除账号
+       */
+      submitDelete(id) {
+        let data = [];
+        data.push(id);
+        api.delete(data).then((res) => {
+          if (res.data.code === 200) {
+            //删除成功
+            this.$notification.success('删除成功!');
+            this.reset();
+          } else {
+            this.$notification.error('删除失败!');
+          }
+        });
+      },
+    },
+    created() {
+      this.getList();
+    },
+  };
+</script>
+
+<style scoped lang="less">
+  .container {
+    padding: 0 20px 20px 20px;
+  }
+
+  :deep(.arco-table-th) {
+    &:last-child {
+      .arco-table-th-item-title {
+        margin-left: 16px;
       }
     }
   }
-</script>
+</style>

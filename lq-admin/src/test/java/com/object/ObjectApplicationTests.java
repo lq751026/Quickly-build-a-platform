@@ -2,12 +2,14 @@ package com.object;
 
 
 import com.alibaba.excel.EasyExcel;
-import com.object.module.lq.sys.entity.*;
+import com.object.module.lq.sys.entity.ChatMesagger;
+import com.object.module.lq.sys.entity.ImportTUserEntity;
+import com.object.module.lq.sys.entity.TRoutingEntity;
+import com.object.module.lq.sys.entity.TUserEntity;
 import com.object.module.lq.sys.service.TRoutingService;
 import com.object.module.lq.sys.service.TUserService;
 import com.object.utils.ExcelUtile;
 import com.object.utils.NubersUtile;
-import com.object.utils.Q;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentPBEConfig;
 import org.junit.jupiter.api.Test;
@@ -68,7 +70,7 @@ class ObjectApplicationTests {
 
     @Test
     public void s() {
-        String str = "1,3,4,5,6,7,8,13,15";
+        String str = "4";
         System.out.println(NubersUtile.nuberRouting(str, routingService.list()));
 
     }
@@ -125,8 +127,7 @@ class ObjectApplicationTests {
 
     @Test
     public  void dada(){
-        Q listOrderBy = routingService.listOrderBy(1);
-        System.out.println(listOrderBy.getData().get("data"));
+
     }
 
 }
