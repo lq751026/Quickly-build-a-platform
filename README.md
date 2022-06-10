@@ -39,15 +39,14 @@
 ![输入图片说明](img/role.png)
 
 ## 快速上手
-> 导入项目过后
-> 第一步
+1.  > 第一步
 导入模块lq-sql下的mysql文件
->第二步
+2.  >第二步
 修改我们的lq-admin下的配置信息 比如说mysql的链接信息
->第三步
+3.  >第三步
 解压我们lq-vue下的压缩包 解压过后
 运行命令 npm run dev
->访问地址http://localhost:3000/
+4.  >访问地址http://localhost:3000/
  
 
 
