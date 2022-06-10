@@ -29,8 +29,14 @@
      主要放置我们的sql语句编写
  ### lq-sql (数据库)
 
-### lq-vue (前端)
-
+### lq-vue (前端)(功能还在扩张中ing，欢迎前端大佬加入)
+ 脚手架采用arco.design（字节跳动）提供的deom [arco.design](https://arco.design/vue/docs/start)
+ 直接上效果图
+![login](img/image.png)
+![后台首页](img/sy.png)
+![输入图片说明](img/sysUser.png)
+![输入图片说明](img/router.png)
+![输入图片说明](img/role.png)
 
 
 
