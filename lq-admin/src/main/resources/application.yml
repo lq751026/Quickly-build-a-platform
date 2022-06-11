@@ -46,8 +46,8 @@ sa-token:
   is-log: true
     # 获取参数名为JASYPT的当前系统的环境变量或命令行参数(java -jar xxxx.jar JASYPT=abcd)
     # 使用命令行直接指定盐值 java -jar xxxx.jar --jasypt.encryptor.password=abcd
-  # JASYPT作为盐值 JASYPT获取不到时使用abcd作为值
-  #  password: #输入你配置密码
+    # JASYPT作为盐值 JASYPT获取不到时使用abcd作为值
+    #  password: #输入你配置密码
 jasypt:
   encryptor:
     password: 751026lq
