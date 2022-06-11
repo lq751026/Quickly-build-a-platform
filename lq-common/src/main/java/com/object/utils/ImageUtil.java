@@ -32,7 +32,7 @@ public class ImageUtil {
                 file1.mkdirs();
             }
             Img.from(file.getInputStream())
-                    .setQuality(0.8)//压缩比率
+        //            .setQuality(0.8)//压缩比率
                     .write(file1);
         } catch (IOException e) {
             return null;

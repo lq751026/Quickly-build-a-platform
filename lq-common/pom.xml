@@ -39,11 +39,11 @@
             <version>2.9.2</version>
         </dependency>
         <!-- 皮肤包 -->
-        <!-- http://localhost:8080/doc.html -->
+        <!-- 引入swagger-ui-layer包 /document.html-->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>swagger-bootstrap-ui</artifactId>
-            <version>1.9.1</version>
+            <groupId>com.zyplayer</groupId>
+            <artifactId>swagger-mg-ui</artifactId>
+            <version>1.0.6</version>
         </dependency>
         <!--日志-->
         <dependency>

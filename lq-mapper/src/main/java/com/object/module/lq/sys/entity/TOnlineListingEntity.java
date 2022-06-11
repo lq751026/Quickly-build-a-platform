@@ -14,14 +14,20 @@ import lombok.NoArgsConstructor;
 /**
  * 用户在线列表
  *
- * @author 小🌤
+ * @author å°ð¤
  * @email 1578442339@qq.com
- * @date 2022-06-07 17:32:09
+ * @date 2022-06-11 16:15:55
  */
 @Data
 @TableName("t_online_listing")
+@AllArgsConstructor
+@NoArgsConstructor
 public class TOnlineListingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    /**
+     *
+     */
     @TableId(type = IdType.AUTO)
     private Integer ogId;
     /**

@@ -90,7 +90,7 @@ CREATE TABLE `t_routing`  (
                               `create_time` datetime NOT NULL COMMENT '创建时间',
                               `path` varchar(100)  NOT NULL COMMENT '路由',
                               `parent_id` int(0) NULL DEFAULT 0 COMMENT '上级id',
-                              `menu_name` varchar(20)  NULL DEFAULT NULL COMMENT '菜单名',
+                              `menu_name` varchar(100)  NULL DEFAULT NULL COMMENT '菜单名',
                               `icon` char(50)  NULL DEFAULT NULL COMMENT '图标',
                               PRIMARY KEY (`id`) USING BTREE
 ) COMMENT = '路由表' ;
@@ -99,9 +99,13 @@ CREATE TABLE `t_routing`  (
 -- Records of t_routing
 -- ----------------------------
 INSERT INTO `t_routing` VALUES (3, '2021-07-27 14:33:00', 'sys', 0, 'menu.sys', 'icon-wifi');
-INSERT INTO `t_routing` VALUES (4, '2021-07-27 14:35:00', 'sysUser', 3, 'menu.sys.sysUser', 'icon-thunderbolt');
+INSERT INTO `t_routing` VALUES (4, '2021-07-27 14:35:00', 'sysUser', 3, 'menu.sys.sysUser', 'icon-user');
 INSERT INTO `t_routing` VALUES (60, '2021-07-27 14:35:00', 'LuYou', 3, 'menu.sys.sysRouter', 'icon-list');
-INSERT INTO `t_routing` VALUES (63, '2022-06-09 12:05:00', 'sysRole', 3, 'menu.sys.sysRole', 'icon-file-pdf');
+INSERT INTO `t_routing` VALUES (63, '2022-06-09 12:05:00', 'sysRole', 3, 'menu.sys.sysRole', 'icon-user-group');
+INSERT INTO `t_routing` VALUES (64, '2022-06-11 15:38:00', 'sysApi', 3, 'menu.sys.swaggerName', 'icon-apps');
+INSERT INTO `t_routing` VALUES (65, '2022-06-11 16:20:26', 'onlinelisting', 3, 'menu.sys.onlinelisting', 'icon-empty');
+INSERT INTO `t_routing` VALUES (66, '2022-06-11 17:19:22', 'log', 3, 'menu.sys.log', 'icon-drag-dot-vertical');
+INSERT INTO `t_routing` VALUES (67, '2022-06-11 17:26:52', 'datasource', 3, 'menu.sys.datasource', 'icon-thunderbolt');
 
 -- ----------------------------
 -- Table structure for t_user

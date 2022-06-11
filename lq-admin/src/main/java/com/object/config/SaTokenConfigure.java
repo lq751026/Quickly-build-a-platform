@@ -22,7 +22,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 .excludePathPatterns("/img/**", "/index/**", "/test/**", "/msg/**",
                         "/swagger-ui.html",
                         "/webjars/**",
-                        "/doc.html",
+                        "/document.html",
                         "/swagger-ui.html",
                         "/swagger-resources/**",
                         "/v2/api-docs/**",
