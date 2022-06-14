@@ -93,8 +93,22 @@
  ### lq-sql (数据库)
 
 ### lq-vue (前端)
+![输入图片说明](img/image.png)
+![输入图片说明](img/role.png)
 ![输入图片说明](img/imagess.png)
 ![输入图片说明](img/image2.png)
+![输入图片说明](img/router.png)
+![输入图片说明](img/sysUser.png)
+
+##  快速入门
+### 第一步 导入lq-sql 刷新数据库看到object就ok
+### 第二步  配置一下lq-admin下的数据库信息
+### 第三步启动 后台
+### 第四步 解压lq-vue的压缩包
+### 第五步 进入文件夹下输入命令
+> npm run dev
+> 访问http:localhost:3000
+
 
 
 
