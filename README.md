@@ -15,7 +15,7 @@
 | 后端开发框架   | SpringBoot          | [SpringBoot官网](https://spring.io/projects/spring-boot/#learn)  |  |
 | 权限认证   | sa-token          | [Sa-Token官网](https://sa-token.dev33.cn/doc/index.html#/)  |轻量级 Java 权限认证框架，让鉴权变得简单、优雅！  |
 | 代码生成器   | renren-generator          | [Renren-Generator官网](https://gitee.com/renrenio/renren-generator)  |人人开源基础上增加了前端页面生成和请求生成 |
- 
+ ![输入图片说明](img/%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE%E6%A0%B7%E4%BE%8B.png)
 
 ## 模块说明 （超详细说明）
  ### lq-admin (核心模块)
