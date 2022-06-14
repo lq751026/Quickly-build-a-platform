@@ -8,7 +8,6 @@
   
  ## 架构体系
  ![输入图片说明](img/%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE%E6%A0%B7%E4%BE%8B.png)
-
  ## 模块说明 （超详细说明）
  ### lq-admin (核心模块)
 
@@ -93,12 +92,25 @@
  ### lq-sql (数据库)
 
 ### lq-vue (前端)
-![输入图片说明](img/image.png)
-![输入图片说明](img/role.png)
-![输入图片说明](img/imagess.png)
-![输入图片说明](img/image2.png)
-![输入图片说明](img/router.png)
-![输入图片说明](img/sysUser.png)
+
+#### 演示图例
+<table border="1"  cellpadding="1" cellspacing="1" style="width:500px">
+    <tbody>
+        <tr>
+            <td><img src="img/image.png" width="1920" /></td>
+            <td><img src="img/role.png" width="1920" /></td>
+        </tr>
+ <tr>
+            <td><img src="img/imagess.png" width="1920" /></td>
+            <td><img src="img/image2.png" width="1920" /></td>
+        </tr>
+ <tr>
+            <td><img src="img/router.png" width="1920" /></td>
+            <td><img src="img/sysUser.png" width="1920" /></td>
+        </tr>
+    </tbody>
+</table>
+
 
 ##  快速入门
 ### 第一步 导入lq-sql 刷新数据库看到object就ok
