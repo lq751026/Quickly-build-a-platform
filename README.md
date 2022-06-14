@@ -6,7 +6,7 @@
 <a src="https://blog.csdn.net/qq_37437493?spm=1003.2020.3001.5343"><img src="https://img.shields.io/badge/小庆-(〝▼皿▼)-green.svg" />💟</a>
 </p>
   
- ## 架构体系               
+ ## 架构体系（制作不易点一个star吧！）               
 
 | 功能介绍  | 使用技术  |  文档地址     | 特性注意事  |
 |---|---|---|---|
