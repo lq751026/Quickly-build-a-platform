@@ -18,7 +18,8 @@
 
 
 
- ![输入图片说明](img/%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE%E6%A0%B7%E4%BE%8B.png)
+ ![输入图片说明](
+https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE%E6%A0%B7%E4%BE%8B.png)
 ## 模块说明 （超详细说明）
  ### lq-admin (核心模块)
 
@@ -108,20 +109,24 @@
 <table border="1"  cellpadding="1" cellspacing="1" style="width:500px">
     <tbody>
         <tr>
-            <td><img src="img/image.png" width="1920" /></td>
-            <td><img src="img/role.png" width="1920" /></td>
+            <td><img src="https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/image.png" width="1920" /></td>
+            <td><img src="
+https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/role.png" width="1920" /></td>
         </tr>
  <tr>
-            <td><img src="img/imagess.png" width="1920" /></td>
-            <td><img src="img/image2.png" width="1920" /></td>
+            <td><img src="
+https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/imagess.png" width="1920" /></td>
+            <td><img src="
+https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/image2.png" width="1920" /></td>
         </tr>
  <tr>
-            <td><img src="img/router.png" width="1920" /></td>
-            <td><img src="img/sysUser.png" width="1920" /></td>
+            <td><img src="https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/router.png" width="1920" /></td>
+            <td><img src="https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/sysUser.png" width="1920" /></td>
         </tr>
  <tr>
-            <td><img src="img/data.png" width="1920" /></td>
-            <td><img src="img/fileImg.png" width="1920" /></td>
+            <td><img src="https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/data.png" width="1920" /></td>
+            <td><img src="
+https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/fileImg.png" width="1920" /></td>
         </tr>
     </tbody>
 </table>
