@@ -1,4 +1,4 @@
-  <h1 align="center">快速搭建平台</h1>
+  <h1 align="center">quickBuild</h1>
 <p align="center">
 <img src="https://img.shields.io/badge/jdk-1.8-blue.svg" /> 
 <img src="https://img.shields.io/badge/springboot-2.2.2-red.svg" />
