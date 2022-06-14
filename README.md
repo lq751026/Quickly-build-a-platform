@@ -119,6 +119,10 @@
             <td><img src="img/router.png" width="1920" /></td>
             <td><img src="img/sysUser.png" width="1920" /></td>
         </tr>
+ <tr>
+            <td><img src="img/data.png" width="1920" /></td>
+            <td><img src="img/fileImg.png" width="1920" /></td>
+        </tr>
     </tbody>
 </table>
 
