@@ -7,7 +7,7 @@ import com.object.type.LiFieldType;
 import java.util.Date;
 
 @LiTableName(value = "tt_test_table", comment = "TT的comment")
-public class TT {
+public class TtTestTable {
     @LiField(isPrimaryKey = true, type = LiFieldType.INT, size = 0, comment = "TT主键")
     private int tId;
     @LiField(type = LiFieldType.VARCHAR, size = 188, comment = "TT的名字")
