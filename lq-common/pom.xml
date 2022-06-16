@@ -17,7 +17,12 @@
     <name>lq-common</name>
     <dependencies>
 
-
+        <dependency>
+            <!--实体类生成表-->
+            <groupId>com.lq</groupId>
+            <artifactId>lq-entity-builder</artifactId>
+            <version>200</version>
+        </dependency>
 
 
         <dependency>
@@ -45,23 +50,14 @@
             <artifactId>swagger-mg-ui</artifactId>
             <version>1.0.6</version>
         </dependency>
-        <!--日志-->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+
+
         <dependency>
             <groupId>store.kalvan.framework</groupId>
             <artifactId>kalvan-log-slf4j</artifactId>
             <version>1.5.1</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
 
         <!-- 密码加密 spring-security-core-4.2.5.RELEASE-->
         <dependency>

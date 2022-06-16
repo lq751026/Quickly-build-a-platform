@@ -51,3 +51,14 @@ sa-token:
 jasypt:
   encryptor:
     password: 751026lq
+
+
+# 实体类生成
+entity:
+  builder:
+    ##   配置是否开启
+    open: true
+    ## 实体类所在的包
+    pack: com.object.test
+
+

@@ -16,11 +16,11 @@
         <module>lq-common</module>
         <!-- slq编写层 -->
         <module>lq-mapper</module>
+        <!-- 实体类自动生成表 -->
+        <module>lq-entity-builder</module>
         <!--好看！！！！-->
         <module>lq-vue</module>
         <module>lq-sql</module>
-
-
     </modules>
     <!--统一管理jar包版本 -->
     <properties>

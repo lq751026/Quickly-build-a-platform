@@ -5,8 +5,8 @@
 <img src="https://img.shields.io/badge/mysql-8.0-green.svg" />
 <a src="https://blog.csdn.net/qq_37437493?spm=1003.2020.3001.5343"><img src="https://img.shields.io/badge/小庆-(〝▼皿▼)-green.svg" />💟</a>
 </p>
-  
- ## 架构体系（制作不易点一个star吧！）               
+
+## 架构体系（制作不易点一个star吧！）
 
 | 功能介绍  | 使用技术  |  文档地址     | 特性注意事  |
 |---|---|---|---|
@@ -16,12 +16,12 @@
 | 权限认证   | sa-token          | [Sa-Token官网](https://sa-token.dev33.cn/doc/index.html#/)  |轻量级 Java 权限认证框架，让鉴权变得简单、优雅！  |
 | 代码生成器   | renren-generator          | [Renren-Generator官网](https://gitee.com/renrenio/renren-generator)  |人人开源基础上增加了前端页面生成和请求生成 |
 
-
-
- ![输入图片说明](
+![输入图片说明](
 https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE%E6%A0%B7%E4%BE%8B.png)
+
 ## 模块说明 （超详细说明）
- ### lq-admin (核心模块)
+
+### lq-admin (核心模块)
 
 ```
     aop:日志
@@ -65,7 +65,8 @@ https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/%E7%BD%91%E7%BB%9C%E6%8B%93
                                     文件上传接口
 ```
 
- ### lq-common (公共模块)
+### lq-common (公共模块)
+
  ```
      config:
             FileConfig: 文件公共路径
@@ -85,13 +86,15 @@ https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/%E7%BD%91%E7%BB%9C%E6%8B%93
            sql防止注入
 ```
 
- ### lq-constructor(代码生成器) 人人代码代码生成器 二开
+### lq-constructor(代码生成器) 人人代码代码生成器 二开
+
 ```
      需要自定义代码生成器只需要在GenUtils的getFileName方法里面添加文件名
      写法按照其他模板的vm语法
 ``` 
 
- ### lq-mapper (dao层)
+### lq-mapper (dao层)
+
 ```
     config:
            Druid：数据源配置
@@ -101,11 +104,22 @@ https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/%E7%BD%91%E7%BB%9C%E6%8B%93
            PageUtils：
                       分页创建
 ```
- ### lq-sql (数据库)
+
+### lq-sql (数据库)
 
 ### lq-vue (前端)
 
+### lq-vue (实体类生成表)
+
+```
+    annotation: 注解
+    start： 核心类
+    table： 创建表的辅助核心类
+    type:   mysql的字段类型
+```
+
 #### 演示图例
+
 <table border="1"  cellpadding="1" cellspacing="1" style="width:500px">
     <tbody>
         <tr>
@@ -131,13 +145,18 @@ https://help-xiao.oss-cn-beijing.aliyuncs.com/lq/img/fileImg.png" width="1920" /
     </tbody>
 </table>
 
+## 快速入门
 
-##  快速入门
 ### 第一步 导入lq-sql 刷新数据库看到object就ok
+
 ### 第二步  配置一下lq-admin下的数据库信息
+
 ### 第三步启动 后台
+
 ### 第四步 解压lq-vue的压缩包
+
 ### 第五步 进入文件夹下输入命令
+
 > npm run dev
 > 访问http:localhost:3000
 
