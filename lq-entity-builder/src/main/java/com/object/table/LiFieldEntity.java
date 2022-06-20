@@ -16,8 +16,24 @@ public class LiFieldEntity {
 
     private String comment;
 
+    private String oldFieldName;
+
+    public String getOldFieldName() {
+        return oldFieldName;
+    }
+
+    public void setOldFieldName(String oldFieldName) {
+        this.oldFieldName = oldFieldName;
+    }
 
     public LiFieldEntity() {
+    }
+
+    public LiFieldEntity(String fieldName, LiFieldType type, int size, String comment) {
+        this.fieldName = fieldName;
+        this.type = type;
+        this.size = size;
+        this.comment = comment;
     }
 
     public LiFieldEntity(String fieldName, boolean isPrimaryKey, LiFieldType type, int size, boolean isEmpty, String comment) {
@@ -28,6 +44,7 @@ public class LiFieldEntity {
         this.isEmpty = isEmpty;
         this.comment = comment;
     }
+
 
     public String getFieldName() {
         return fieldName;

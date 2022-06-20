@@ -6,6 +6,7 @@ import com.object.annotation.LiTableName;
 import com.object.table.LiFieldEntity;
 import com.object.table.LiTableEntity;
 import com.object.type.LiFieldType;
+import com.object.type.LiFieldTypeComparison;
 import org.reflections.Reflections;
 
 import javax.sql.DataSource;
@@ -61,6 +62,7 @@ public class LiCreateTable {
             for (Field field : fields) {
                 String name = ConvertCamelCaseToUnderscore(field.getName());
                 LiField annotation = field.getAnnotation(LiField.class);
+                if (annotation == null) continue;
                 fieldEntities.add(new LiFieldEntity(name, annotation.isPrimaryKey()
                         , annotation.type(), annotation.size()
                         , annotation.isEmpty(), annotation.comment()));
@@ -80,6 +82,7 @@ public class LiCreateTable {
     private static void createSql(List<LiTableEntity> liTableEntities, DataSource dataSource) {
 
         //获取到创表信息过后进行sql语句的生成
+        log.warning("开始执行创建表的sql中...");
         StringBuffer sql = new StringBuffer();
         liTableEntities.forEach(tableObj -> {
             sql.append("CREATE TABLE " + tableObj.getTableName() + " (\n");
@@ -122,7 +125,6 @@ public class LiCreateTable {
     private static void executeSql(LiTableEntity tableObj, String sqls, DataSource dataSource) {
         Connection connection = null;
         try {
-            log.warning("开始创建表名:" + tableObj.getTableName());
             connection = dataSource.getConnection();
             String selectTableName = "select * from information_schema.TABLES  where TABLE_NAME = '" + tableObj.getTableName() + "'";
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableName);
@@ -132,8 +134,8 @@ public class LiCreateTable {
                 connection.prepareStatement(sqls).execute();
                 log.warning("创建表名:" + tableObj.getTableName() + "成功");
             } else {
-                log.warning("表名:" + tableObj.getTableName() + "已存在...");
                 //TOOD    如果是新增了字段或者是 修改了字段 或者是删除了字段
+                checkField(tableObj, dataSource, sqls);
             }
         } catch (SQLException e) {
             log.info("创建表名:" + tableObj.getTableName() + "失败,失败原因:" + e);
@@ -145,6 +147,115 @@ public class LiCreateTable {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /**
+     * 检查字段
+     *
+     * @param tableObj
+     * @param dataSource
+     * @param sqls
+     * @throws SQLException
+     */
+    private static void checkField(LiTableEntity tableObj, DataSource dataSource, String sqls) throws SQLException {
+        //拿到我们的当前选择的数据名
+        String tableName = tableObj.getTableName();
+        Connection connection = dataSource.getConnection();
+        String dataBaseName = connection.getCatalog();
+        String sql = "SELECT\n" +
+                " C.COLUMN_NAME AS fieldName,  C.CHARACTER_MAXIMUM_LENGTH AS  length,c.COLUMN_COMMENT as comment,C.DATA_TYPE as type\n" +
+                "FROM\n" +
+                "information_schema.`TABLES` T\n" +
+                "LEFT JOIN information_schema.`COLUMNS` C ON T.TABLE_NAME = C.TABLE_NAME AND T.TABLE_SCHEMA = C.TABLE_SCHEMA\n" +
+                "where  T.TABLE_SCHEMA = ? and T.TABLE_NAME=?";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, dataBaseName);
+        preparedStatement.setString(2, tableName);
+        ResultSet res = preparedStatement.executeQuery();
+
+
+        //拿到我们的数据库的消息字段
+        ArrayList<LiFieldEntity> fieldEntities = new ArrayList<>();
+        //拿到我们的当前表的信息
+        while (res.next()) {
+            String fieldName = res.getString(1);
+            int length = res.getInt(2);
+            String comment = res.getString(3);
+            String type = res.getString(4);
+            fieldEntities.add(new LiFieldEntity(fieldName, LiFieldTypeComparison.typeComparison(type), length, comment));
+        }
+        List<LiFieldEntity> nowFieldEntities = tableObj.getFieldEntities();
+
+        //字段比对
+        List<LiFieldEntity> newFieldEntities = FieldAttributeComparison(nowFieldEntities, fieldEntities);
+        String infos = "info   " + tableName;
+        if (newFieldEntities == null) {
+            //直接使用现在的表创建
+            //第一步需要删除原来的表
+            PreparedStatement preparedStatement1 = connection.prepareStatement("drop table " + tableName);
+            preparedStatement1.executeUpdate();
+            //第二步就是重新执行我们的sql
+            connection.prepareStatement(sqls).executeUpdate();
+            infos += "   表创建完毕  ";
+        } else {
+            //走我们的修改表的属性
+            if (newFieldEntities.size() == 0) {
+                //没有修改我们的字段直接返回
+                connection.close();
+                log.info(infos + "  表没有修改   ");
+                return;
+            }
+            String updateSQL = "";
+            for (LiFieldEntity newFieldEntity : newFieldEntities) {
+                updateSQL += "alter table " + tableName + "   CHANGE " + newFieldEntity.getOldFieldName() + "   " + newFieldEntity.getFieldName() + "   " + newFieldEntity.getType() + "(" + newFieldEntity.getSize() + ") comment \"" + newFieldEntity.getComment() + "\" NOT NULL ";
+            }
+            connection.prepareStatement(updateSQL).executeUpdate();
+            infos += "  表创建修改了" + newFieldEntities.size() + "个字段  执行完毕...";
+        }
+        connection.close();
+        log.info(infos);
+    }
+
+    /**
+     * 字段属性比对 拿到最新的字段属性
+     *
+     * @param nowFieldEntities
+     * @param fieldEntities
+     * @return
+     */
+    private static List<LiFieldEntity> FieldAttributeComparison(List<LiFieldEntity> nowFieldEntities, ArrayList<LiFieldEntity> fieldEntities) {
+        //如果新的字段属性的 长度和之前的不一样就直接返回null
+        if (nowFieldEntities.size() != fieldEntities.size())
+            return null;
+        //如果是相同我们就检查字段又修改的地方吗
+        List<LiFieldEntity> newFieldEntities = new ArrayList<>();
+        for (int i = 0; i < nowFieldEntities.size(); i++) {
+            LiFieldEntity nowFieldEntity = nowFieldEntities.get(i);
+            LiFieldEntity liFieldEntity = fieldEntities.get(i);
+            if (!DeterminingNewAndOldFieldProperties(nowFieldEntity, liFieldEntity)) {
+                //只要不一样了
+                nowFieldEntity.setOldFieldName(liFieldEntity.getFieldName());
+                newFieldEntities.add(nowFieldEntity);
+            }
+        }
+        return newFieldEntities;
+    }
+
+    /**
+     * 确定新旧字段属性
+     *
+     * @param nowFieldEntity
+     * @param liFieldEntity
+     * @return
+     */
+    private static boolean DeterminingNewAndOldFieldProperties(LiFieldEntity nowFieldEntity, LiFieldEntity liFieldEntity) {
+        if (nowFieldEntity.getComment().equals(liFieldEntity.getComment()) &&
+                nowFieldEntity.getFieldName().equals(liFieldEntity.getFieldName()) &&
+                nowFieldEntity.getSize() == liFieldEntity.getSize() &&
+                nowFieldEntity.getType().equals(liFieldEntity.getType())) {
+            return true;
+        }
+        return false;
     }
 
     /**

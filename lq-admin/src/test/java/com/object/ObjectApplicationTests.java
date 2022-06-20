@@ -8,6 +8,7 @@ import com.object.module.lq.sys.entity.TRoutingEntity;
 import com.object.module.lq.sys.entity.TUserEntity;
 import com.object.module.lq.sys.service.TRoutingService;
 import com.object.module.lq.sys.service.TUserService;
+import com.object.start.LiCreateTable;
 import com.object.utils.ExcelUtile;
 import com.object.utils.NubersUtile;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -124,10 +126,11 @@ class ObjectApplicationTests {
     }
 
 
-
+@Autowired
+private DataSource dataSource;
     @Test
     public  void dada(){
-
+        LiCreateTable.createTable(dataSource,"com.object.test");
     }
 
 }
