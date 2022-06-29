@@ -126,11 +126,12 @@ public class LiCreateTable {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            String selectTableName = "select * from information_schema.TABLES  where TABLE_NAME = '" + tableObj.getTableName() + "'";
+            String selectTableName = " SELECT COUNT(*) as count FROM information_schema.TABLES WHERE table_name = '" + tableObj.getTableName() + "' and TABLE_SCHEMA = '" + connection.getCatalog() + "'";
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableName);
             ResultSet resultSet = preparedStatement.executeQuery();
-            boolean next = resultSet.next();
-            if (!next) {
+            boolean next = true;
+            while (resultSet.next()) next = resultSet.getInt(1) == 0;
+            if (next) {
                 connection.prepareStatement(sqls).execute();
                 log.warning("创建表名:" + tableObj.getTableName() + "成功");
             } else {
@@ -163,7 +164,7 @@ public class LiCreateTable {
         Connection connection = dataSource.getConnection();
         String dataBaseName = connection.getCatalog();
         String sql = "SELECT\n" +
-                " C.COLUMN_NAME AS fieldName,  C.CHARACTER_MAXIMUM_LENGTH AS  length,c.COLUMN_COMMENT as comment,C.DATA_TYPE as type\n" +
+                " C.COLUMN_NAME AS fieldName,  C.COLUMN_TYPE as lengthStr,c.COLUMN_COMMENT as comment,C.DATA_TYPE as type\n" +
                 "FROM\n" +
                 "information_schema.`TABLES` T\n" +
                 "LEFT JOIN information_schema.`COLUMNS` C ON T.TABLE_NAME = C.TABLE_NAME AND T.TABLE_SCHEMA = C.TABLE_SCHEMA\n" +
@@ -179,7 +180,9 @@ public class LiCreateTable {
         //拿到我们的当前表的信息
         while (res.next()) {
             String fieldName = res.getString(1);
-            int length = res.getInt(2);
+            String lengthStr = res.getString(2);
+            String substring = lengthStr.substring(lengthStr.indexOf("(") + 1, lengthStr.indexOf(")"));
+            int length = Integer.parseInt(substring);
             String comment = res.getString(3);
             String type = res.getString(4);
             fieldEntities.add(new LiFieldEntity(fieldName, LiFieldTypeComparison.typeComparison(type), length, comment));
@@ -207,9 +210,9 @@ public class LiCreateTable {
             }
             String updateSQL = "";
             for (LiFieldEntity newFieldEntity : newFieldEntities) {
-                updateSQL += "alter table " + tableName + "   CHANGE " + newFieldEntity.getOldFieldName() + "   " + newFieldEntity.getFieldName() + "   " + newFieldEntity.getType() + "(" + newFieldEntity.getSize() + ") comment \"" + newFieldEntity.getComment() + "\" NOT NULL ";
+                updateSQL = "alter table " + tableName + "   CHANGE " + newFieldEntity.getOldFieldName() + "   " + newFieldEntity.getFieldName() + "   " + newFieldEntity.getType() + "(" + newFieldEntity.getSize() + ") comment \"" + newFieldEntity.getComment() + "\" NOT NULL ";
+                connection.prepareStatement(updateSQL).executeUpdate();
             }
-            connection.prepareStatement(updateSQL).executeUpdate();
             infos += "  表创建修改了" + newFieldEntities.size() + "个字段  执行完毕...";
         }
         connection.close();
@@ -249,10 +252,11 @@ public class LiCreateTable {
      * @return
      */
     private static boolean DeterminingNewAndOldFieldProperties(LiFieldEntity nowFieldEntity, LiFieldEntity liFieldEntity) {
+        log.info(String.valueOf(nowFieldEntity.getType().name().equals(liFieldEntity.getType().name())));
         if (nowFieldEntity.getComment().equals(liFieldEntity.getComment()) &&
                 nowFieldEntity.getFieldName().equals(liFieldEntity.getFieldName()) &&
                 nowFieldEntity.getSize() == liFieldEntity.getSize() &&
-                nowFieldEntity.getType().equals(liFieldEntity.getType())) {
+                nowFieldEntity.getType().name().equals(liFieldEntity.getType().name())) {
             return true;
         }
         return false;

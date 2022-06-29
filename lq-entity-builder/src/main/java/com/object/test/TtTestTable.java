@@ -15,7 +15,7 @@ public class TtTestTable {
     @LiField(isPrimaryKey = true, type = LiFieldType.DATETIME, size = 0, comment = "TT时间")
     private Date createTime;
 
-     //不写注解就是不加入数据库字段名
+    //不写注解就是不加入数据库字段名
     private String testName;
 
     public int gettId() {

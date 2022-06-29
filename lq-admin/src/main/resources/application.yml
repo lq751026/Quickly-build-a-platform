@@ -57,8 +57,8 @@ jasypt:
 entity:
   builder:
     ##   配置是否开启
-    open: true
+    open: false
     ## 实体类所在的包
-    pack: com.object.test
+    pack: com.object.module.lq.sys.entity
 
 

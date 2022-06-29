@@ -1,10 +1,14 @@
 package com.object.module.lq.sys.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.object.dao.sys.TRoutingDao;
 import com.object.module.lq.sys.entity.*;
+import com.object.module.lq.sys.service.TRoleService;
 import com.object.module.lq.sys.service.TRoutingService;
 import com.object.module.lq.sys.service.TUserService;
-import com.object.module.lq.sys.service.TRoleService;
-import com.object.utils.*;
+import com.object.utils.NubersUtile;
+import com.object.utils.PurviewUtile;
+import com.object.utils.Q;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.object.dao.sys.TRoutingDao;
 
 
 @Service("TRoutingServiceImpl")
@@ -73,33 +71,33 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
         for (TRoutingEntity tRoutingEntity : collect) {
             routers.add(data(tRoutingEntity));
         }
-
         return Q.ok().put("data", routers);
     }
 
-     private TRouterEntity data(TRoutingEntity tRoutingEntity){
-         String pathName = tRoutingEntity.getPath();
-         TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(), "/" + tRoutingEntity.getPath(), pathName);
 
-         routerEntity.setMeta(new TMetaEntity(tRoutingEntity.getMenuName(), true, tRoutingEntity.getIcon(), 2));
-         List<TRouterEntity> routerEntities = new ArrayList<>();
-         if (tRoutingEntity.getChildren() != null) {
-             for (TRoutingEntity child : tRoutingEntity.getChildren()) {
+    private TRouterEntity data(TRoutingEntity tRoutingEntity) {
+        String pathName = tRoutingEntity.getPath();
+        TRouterEntity routerEntity = new TRouterEntity(tRoutingEntity.getId(), "/" + tRoutingEntity.getPath(), pathName);
 
-                 TRouterEntity routerEntity1=null;
-                     String pathName1 = child.getPath();
-                      routerEntity1 = new TRouterEntity(child.getId(), "/" +  pathName1,  pathName1);
-                     routerEntity1.setMeta(new TMetaEntity(child.getId(), child.getMenuName(), true, child.getIcon(), 2, "['*']"));
-                 if(child.getChildren()!=null) {
-                     TRouterEntity data = data(child);
-                     routerEntity1.setChildren(data.getChildren());
-                 }
-                     routerEntities.add(routerEntity1);
-             }
-             routerEntity.setChildren(routerEntities);
-         }
-         return  routerEntity;
-     }
+        routerEntity.setMeta(new TMetaEntity(tRoutingEntity.getMenuName(), true, tRoutingEntity.getIcon(), 2));
+        List<TRouterEntity> routerEntities = new ArrayList<>();
+        if (tRoutingEntity.getChildren() != null) {
+            for (TRoutingEntity child : tRoutingEntity.getChildren()) {
+
+                TRouterEntity routerEntity1 = null;
+                String pathName1 = child.getPath();
+                routerEntity1 = new TRouterEntity(child.getId(), "/" + pathName1, pathName1);
+                routerEntity1.setMeta(new TMetaEntity(child.getId(), child.getMenuName(), true, child.getIcon(), 2, "['*']"));
+                if (child.getChildren() != null) {
+                    TRouterEntity data = data(child);
+                    routerEntity1.setChildren(data.getChildren());
+                }
+                routerEntities.add(routerEntity1);
+            }
+            routerEntity.setChildren(routerEntities);
+        }
+        return routerEntity;
+    }
 
     /**
      * 当前路由的权限查询
@@ -137,6 +135,7 @@ public class TRoutingServiceImpl extends ServiceImpl<TRoutingDao, TRoutingEntity
         }).collect(Collectors.toList());
         return Q.ok().put("data", collect);
     }
+
 
     public List<TRoutingEntity> getChider(TRoutingEntity menu, List<TRoutingEntity> list) {
         List<TRoutingEntity> data = list.stream().filter(rout -> {
