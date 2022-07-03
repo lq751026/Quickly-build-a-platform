@@ -170,7 +170,7 @@ CREATE TABLE `t_user`
 INSERT INTO `t_user`
 VALUES (1, 'admin', 'admin', '$2a$10$QHf3DeD6RzXdL3JAGB4Hxu5kXvpXN40fLFCNGIw.PZD79vpOQKw6O', 'admin@qq.com',
         '2021-07-14 17:10:00',
-        'https://help-xiao.oss-cn-beijing.aliyuncs.com/2021-07-24/533123c9-2a71-4d82-8101-a82c56b472e2_2.jpg', '1', 2,
+        'https://help-xiao.oss-cn-beijing.aliyuncs.com/2021-07-24/533123c9-2a71-4d82-8101-a82c56b472e2_2.jpg', '1',1,
         0);
 INSERT INTO `t_user`
 VALUES (5, '123', '123', '$2a$10$.tBXFDlafF2v7yQ3P1MDEOApVrdwQO3NFQcJDRYIpCZ0TFNNXW/FC', '1578423@qq.com',

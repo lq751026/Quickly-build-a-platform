@@ -7,13 +7,13 @@ spring:
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
     #oss 的配置
-#  cloud:
-#    alicloud:
-#      access-key:
-#      secret-key:
-#      oss:
-#        endpoint:
-#        bucket:
+  #  cloud:
+  #    alicloud:
+  #      access-key:
+  #      secret-key:
+  #      oss:
+  #        endpoint:
+  #        bucket:
   # 设置当前的环境
   profiles:
     active: dev
@@ -47,7 +47,7 @@ sa-token:
     # 获取参数名为JASYPT的当前系统的环境变量或命令行参数(java -jar xxxx.jar JASYPT=abcd)
     # 使用命令行直接指定盐值 java -jar xxxx.jar --jasypt.encryptor.password=abcd
     # JASYPT作为盐值 JASYPT获取不到时使用abcd作为值
-    #  password: #输入你配置密码
+  #  password: #输入你配置密码
 jasypt:
   encryptor:
     password: 751026lq
@@ -57,7 +57,7 @@ jasypt:
 entity:
   builder:
     ##   配置是否开启
-    open: false
+    open: true
     ## 实体类所在的包
     pack: com.object.module.lq.sys.entity
 

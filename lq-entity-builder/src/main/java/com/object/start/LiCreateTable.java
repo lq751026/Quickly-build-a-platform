@@ -27,11 +27,13 @@ import java.util.regex.Pattern;
  */
 
 
-public class LiCreateTable {
+public class LiCreateTable
+{
 
     protected static Logger log = Logger.getLogger(String.valueOf(LiCreateTable.class));
 
-    public static void createTable(DataSource dataSource, String scannedPackage) {
+    public static void createTable(DataSource dataSource, String scannedPackage)
+    {
         List<LiTableEntity> liTableEntities = init(scannedPackage);
         createSql(liTableEntities, dataSource);
     }
@@ -42,7 +44,8 @@ public class LiCreateTable {
      * @param scannedPackage
      * @return
      */
-    private static List<LiTableEntity> init(String scannedPackage) {
+    private static List<LiTableEntity> init(String scannedPackage)
+    {
         //创建集合装表信息以及表里面的字段信息
         List<LiTableEntity> liTableEntities = new ArrayList<>();
         //扫描当前包下的全部class
@@ -50,7 +53,8 @@ public class LiCreateTable {
         //获取class中有LiTableName注解的全部实体类class
         Set<Class<?>> annotatedWith = reflections.getTypesAnnotatedWith(LiTableName.class);
         //遍历class
-        for (Class<?> aClass : annotatedWith) {
+        for (Class<?> aClass : annotatedWith)
+            {
             //对我们的表名数据的装载
             LiTableEntity liTableEntity = new LiTableEntity();
             List<LiFieldEntity> fieldEntities = new ArrayList<>();
@@ -59,17 +63,18 @@ public class LiCreateTable {
             liTableEntity.setTableName(table, comment);
             Field[] fields = aClass.getDeclaredFields();
             //对我们的字段的数据的装载
-            for (Field field : fields) {
+            for (Field field : fields)
+                {
                 String name = ConvertCamelCaseToUnderscore(field.getName());
                 LiField annotation = field.getAnnotation(LiField.class);
                 if (annotation == null) continue;
                 fieldEntities.add(new LiFieldEntity(name, annotation.isPrimaryKey()
                         , annotation.type(), annotation.size()
                         , annotation.isEmpty(), annotation.comment()));
-            }
+                }
             liTableEntity.setFieldEntities(fieldEntities);
             liTableEntities.add(liTableEntity);
-        }
+            }
         return liTableEntities;
     }
 
@@ -79,38 +84,42 @@ public class LiCreateTable {
      * @param liTableEntities
      * @param dataSource
      */
-    private static void createSql(List<LiTableEntity> liTableEntities, DataSource dataSource) {
+    private static void createSql(List<LiTableEntity> liTableEntities, DataSource dataSource)
+    {
 
         //获取到创表信息过后进行sql语句的生成
         log.warning("开始执行创建表的sql中...");
         StringBuffer sql = new StringBuffer();
-        liTableEntities.forEach(tableObj -> {
-            sql.append("CREATE TABLE " + tableObj.getTableName() + " (\n");
-            String PrimaryKey = "";
-            for (int i = 0; i < tableObj.getFieldEntities().size(); i++) {
-                LiFieldEntity fieldEntity = tableObj.getFieldEntities().get(i);
-                String fid = "";
-                fid = fieldEntity.getFieldName() + " " + fieldEntity.getType() + "(" + fieldEntity.getSize() + ")";
-                if (!fieldEntity.isEmpty()) fid += " NOT NULL";
-                else fid += " NULL DEFAULT NULL";
-                if (fieldEntity.isPrimaryKey()) {
-                    if (fieldEntity.getType() == LiFieldType.INT
-                            || fieldEntity.getType() == LiFieldType.INTEGER) fid += " AUTO_INCREMENT ";
-                    PrimaryKey += fieldEntity.getFieldName() + ",";
+        liTableEntities.forEach(tableObj ->
+        {
+        sql.append("CREATE TABLE " + tableObj.getTableName() + " (\n");
+        String PrimaryKey = "";
+        for (int i = 0; i < tableObj.getFieldEntities().size(); i++)
+            {
+            LiFieldEntity fieldEntity = tableObj.getFieldEntities().get(i);
+            String fid = "";
+            fid = fieldEntity.getFieldName() + " " + fieldEntity.getType() + "(" + fieldEntity.getSize() + ")";
+            if (!fieldEntity.isEmpty()) fid += " NOT NULL";
+            else fid += " NULL DEFAULT NULL";
+            if (fieldEntity.isPrimaryKey())
+                {
+                if (fieldEntity.getType() == LiFieldType.INT
+                        || fieldEntity.getType() == LiFieldType.INTEGER) fid += " AUTO_INCREMENT ";
+                PrimaryKey += fieldEntity.getFieldName() + ",";
                 }
-                fid += " COMMENT '" + fieldEntity.getComment() + "' ,\n";
-                sql.append(fid);
+            fid += " COMMENT '" + fieldEntity.getComment() + "' ,\n";
+            sql.append(fid);
             }
-            PrimaryKey = PrimaryKey.substring(0, PrimaryKey.lastIndexOf(","));
-            sql.append("PRIMARY KEY (" + PrimaryKey + ") USING BTREE\n");
-            sql.append(") COMMENT='" + tableObj.getComment() + "'");
-            sql.append(";\n\n");
+        PrimaryKey = PrimaryKey.substring(0, PrimaryKey.lastIndexOf(","));
+        sql.append("PRIMARY KEY (" + PrimaryKey + ") USING BTREE\n");
+        sql.append(") COMMENT='" + tableObj.getComment() + "'");
+        sql.append(";\n\n");
 
-            String sqls = sql.toString();
-            sql.delete(0, sql.length() - 1);
+        String sqls = sql.toString();
+        sql.delete(0, sql.length() - 1);
 
-            //调用执行创建sql方法
-            executeSql(tableObj, sqls, dataSource);
+        //调用执行创建sql方法
+        executeSql(tableObj, sqls, dataSource);
 
         });
     }
@@ -122,32 +131,44 @@ public class LiCreateTable {
      * @param sqls
      * @param dataSource
      */
-    private static void executeSql(LiTableEntity tableObj, String sqls, DataSource dataSource) {
+    private static void executeSql(LiTableEntity tableObj, String sqls, DataSource dataSource)
+    {
         Connection connection = null;
-        try {
+        try
+            {
             connection = dataSource.getConnection();
             String selectTableName = " SELECT COUNT(*) as count FROM information_schema.TABLES WHERE table_name = '" + tableObj.getTableName() + "' and TABLE_SCHEMA = '" + connection.getCatalog() + "'";
             PreparedStatement preparedStatement = connection.prepareStatement(selectTableName);
             ResultSet resultSet = preparedStatement.executeQuery();
             boolean next = true;
             while (resultSet.next()) next = resultSet.getInt(1) == 0;
-            if (next) {
+            if (next)
+                {
                 connection.prepareStatement(sqls).execute();
                 log.warning("创建表名:" + tableObj.getTableName() + "成功");
-            } else {
+                }
+            else
+                {
                 //TOOD    如果是新增了字段或者是 修改了字段 或者是删除了字段
                 checkField(tableObj, dataSource, sqls);
+                }
             }
-        } catch (SQLException e) {
+        catch (SQLException e)
+            {
             log.info("创建表名:" + tableObj.getTableName() + "失败,失败原因:" + e);
-        } finally {
-
-            try {
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
-        }
+        finally
+            {
+
+            try
+                {
+                if (connection != null) connection.close();
+                }
+            catch (SQLException e)
+                {
+                throw new RuntimeException(e);
+                }
+            }
     }
 
     /**
@@ -158,7 +179,8 @@ public class LiCreateTable {
      * @param sqls
      * @throws SQLException
      */
-    private static void checkField(LiTableEntity tableObj, DataSource dataSource, String sqls) throws SQLException {
+    private static void checkField(LiTableEntity tableObj, DataSource dataSource, String sqls) throws SQLException
+    {
         //拿到我们的当前选择的数据名
         String tableName = tableObj.getTableName();
         Connection connection = dataSource.getConnection();
@@ -178,21 +200,31 @@ public class LiCreateTable {
         //拿到我们的数据库的消息字段
         ArrayList<LiFieldEntity> fieldEntities = new ArrayList<>();
         //拿到我们的当前表的信息
-        while (res.next()) {
+        while (res.next())
+            {
             String fieldName = res.getString(1);
             String lengthStr = res.getString(2);
-            String substring = lengthStr.substring(lengthStr.indexOf("(") + 1, lengthStr.indexOf(")"));
+            String substring = null;
+            try
+                {
+                substring = lengthStr.substring(lengthStr.indexOf("(") + 1, lengthStr.indexOf(")"));
+                }
+            catch (Exception e)
+                {
+                substring = "0";
+                }
             int length = Integer.parseInt(substring);
             String comment = res.getString(3);
             String type = res.getString(4);
             fieldEntities.add(new LiFieldEntity(fieldName, LiFieldTypeComparison.typeComparison(type), length, comment));
-        }
+            }
         List<LiFieldEntity> nowFieldEntities = tableObj.getFieldEntities();
 
         //字段比对
         List<LiFieldEntity> newFieldEntities = FieldAttributeComparison(nowFieldEntities, fieldEntities);
         String infos = "info   " + tableName;
-        if (newFieldEntities == null) {
+        if (newFieldEntities == null)
+            {
             //直接使用现在的表创建
             //第一步需要删除原来的表
             PreparedStatement preparedStatement1 = connection.prepareStatement("drop table " + tableName);
@@ -200,21 +232,25 @@ public class LiCreateTable {
             //第二步就是重新执行我们的sql
             connection.prepareStatement(sqls).executeUpdate();
             infos += "   表创建完毕  ";
-        } else {
+            }
+        else
+            {
             //走我们的修改表的属性
-            if (newFieldEntities.size() == 0) {
+            if (newFieldEntities.size() == 0)
+                {
                 //没有修改我们的字段直接返回
                 connection.close();
                 log.info(infos + "  表没有修改   ");
                 return;
-            }
+                }
             String updateSQL = "";
-            for (LiFieldEntity newFieldEntity : newFieldEntities) {
+            for (LiFieldEntity newFieldEntity : newFieldEntities)
+                {
                 updateSQL = "alter table " + tableName + "   CHANGE " + newFieldEntity.getOldFieldName() + "   " + newFieldEntity.getFieldName() + "   " + newFieldEntity.getType() + "(" + newFieldEntity.getSize() + ") comment \"" + newFieldEntity.getComment() + "\" NOT NULL ";
                 connection.prepareStatement(updateSQL).executeUpdate();
-            }
+                }
             infos += "  表创建修改了" + newFieldEntities.size() + "个字段  执行完毕...";
-        }
+            }
         connection.close();
         log.info(infos);
     }
@@ -226,21 +262,24 @@ public class LiCreateTable {
      * @param fieldEntities
      * @return
      */
-    private static List<LiFieldEntity> FieldAttributeComparison(List<LiFieldEntity> nowFieldEntities, ArrayList<LiFieldEntity> fieldEntities) {
+    private static List<LiFieldEntity> FieldAttributeComparison(List<LiFieldEntity> nowFieldEntities, ArrayList<LiFieldEntity> fieldEntities)
+    {
         //如果新的字段属性的 长度和之前的不一样就直接返回null
         if (nowFieldEntities.size() != fieldEntities.size())
             return null;
         //如果是相同我们就检查字段又修改的地方吗
         List<LiFieldEntity> newFieldEntities = new ArrayList<>();
-        for (int i = 0; i < nowFieldEntities.size(); i++) {
+        for (int i = 0; i < nowFieldEntities.size(); i++)
+            {
             LiFieldEntity nowFieldEntity = nowFieldEntities.get(i);
             LiFieldEntity liFieldEntity = fieldEntities.get(i);
-            if (!DeterminingNewAndOldFieldProperties(nowFieldEntity, liFieldEntity)) {
+            if (!DeterminingNewAndOldFieldProperties(nowFieldEntity, liFieldEntity))
+                {
                 //只要不一样了
                 nowFieldEntity.setOldFieldName(liFieldEntity.getFieldName());
                 newFieldEntities.add(nowFieldEntity);
+                }
             }
-        }
         return newFieldEntities;
     }
 
@@ -251,14 +290,16 @@ public class LiCreateTable {
      * @param liFieldEntity
      * @return
      */
-    private static boolean DeterminingNewAndOldFieldProperties(LiFieldEntity nowFieldEntity, LiFieldEntity liFieldEntity) {
+    private static boolean DeterminingNewAndOldFieldProperties(LiFieldEntity nowFieldEntity, LiFieldEntity liFieldEntity)
+    {
         log.info(String.valueOf(nowFieldEntity.getType().name().equals(liFieldEntity.getType().name())));
         if (nowFieldEntity.getComment().equals(liFieldEntity.getComment()) &&
                 nowFieldEntity.getFieldName().equals(liFieldEntity.getFieldName()) &&
                 nowFieldEntity.getSize() == liFieldEntity.getSize() &&
-                nowFieldEntity.getType().name().equals(liFieldEntity.getType().name())) {
+                nowFieldEntity.getType().name().equals(liFieldEntity.getType().name()))
+            {
             return true;
-        }
+            }
         return false;
     }
 
@@ -267,13 +308,15 @@ public class LiCreateTable {
      * @return java.lang.String
      * @Description 将驼峰转为下划线
      */
-    public static String ConvertCamelCaseToUnderscore(String str) {
+    public static String ConvertCamelCaseToUnderscore(String str)
+    {
         Pattern compile = Pattern.compile("[A-Z]");
         Matcher matcher = compile.matcher(str);
         StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
+        while (matcher.find())
+            {
             matcher.appendReplacement(sb, "_" + matcher.group(0).toLowerCase());
-        }
+            }
         matcher.appendTail(sb);
         return sb.toString();
     }

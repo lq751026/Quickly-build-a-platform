@@ -3,6 +3,7 @@ package com.object.module.lq.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.object.module.lq.sys.entity.TRolePermissionEntity;
 import com.object.module.lq.sys.entity.TRoutingEntity;
+import com.object.utils.Q;
 
 import java.util.List;
 
@@ -13,5 +14,7 @@ import java.util.List;
  */
 public interface TRolePermissionService extends IService<TRolePermissionEntity> {
     List<TRoutingEntity> findUserId(Integer urId);
+
+    Q infoUrId(Integer urId);
 }
 

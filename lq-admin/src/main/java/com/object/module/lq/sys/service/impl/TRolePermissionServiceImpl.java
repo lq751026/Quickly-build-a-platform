@@ -9,6 +9,7 @@ import com.object.module.lq.sys.entity.TUserEntity;
 import com.object.module.lq.sys.service.TRolePermissionService;
 import com.object.module.lq.sys.service.TRoutingService;
 import com.object.module.lq.sys.service.TUserService;
+import com.object.utils.Q;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,12 @@ public class TRolePermissionServiceImpl extends ServiceImpl<TRolePermissionDao, 
         if (ids.isEmpty()) return null;
         List<TRoutingEntity> list1 = tRoutingService.listByIds(ids);
         return list1;
+    }
+
+    @Override
+    public Q infoUrId(Integer urId)
+    {
+         //获取当前下用户的全部授权码
+        return null;
     }
 }

@@ -10,28 +10,26 @@ import com.object.type.LiFieldType;
 import lombok.Data;
 
 /**
- * 权限表
- */
+ * @作者：小庆 🌤
+ * @date: 2022/7/3
+ * @email:1578442339@qq.com
+ **/
+
 @Data
-@TableName("t_role_permission")
-@LiTableName(value = "t_role_permission", comment = "权限表")
-public class TRolePermissionEntity
+@TableName("t_role_authorization")
+@LiTableName(value = "t_role_authorization", comment = "角色-权限-表")
+public class TRoleAuthorizationEntity
 {
     /**
      * 主键
      */
     @LiField(isPrimaryKey = true, isEmpty = false, type = LiFieldType.INT, comment = "主健")
     @TableId(type = IdType.AUTO)
-    private Integer rpId;
+    private Integer raId;
 
     @LiField(type = LiFieldType.INT, size = 200, comment = "角色id")
     private Integer reId;
-    @LiField(type = LiFieldType.INT, size = 200, comment = "路由角色")
-    private Integer rtId;
+    @LiField(type = LiFieldType.VARCHAR, size = 30, comment = "授权")
+    private String raPermission;
 
-    /**
-     * 数据排除字段
-     */
-    @TableField(exist = false)
-    private String rtName;
 }
