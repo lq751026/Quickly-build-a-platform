@@ -23,12 +23,14 @@ public class SaTokenConfigure implements WebMvcConfigurer {
 /**
  *  角色
  */
+ /**
                     SaRouter.match("/user/**", r -> StpUtil.checkRole("sysUser"));
                     SaRouter.match("/routing/**", r -> StpUtil.checkRole("LuYou"));
                     SaRouter.match("/role/**", r -> StpUtil.checkRole("sysRole"));
                     SaRouter.match("/tonlinelisting/**", r -> StpUtil.checkRole("onlinelisting"));
                     SaRouter.match("/log/**", r -> StpUtil.checkRole("log"));
                     SaRouter.match("/file/**", r -> StpUtil.checkRole("file"));
+                    **/
 
                 })).addPathPatterns("/**")
                 .excludePathPatterns("/static/**")
